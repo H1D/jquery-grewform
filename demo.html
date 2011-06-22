@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru">
+  <head>
+     <script type="text/javascript"
+             src="http://yandex.st/jquery/1.4.2/jquery.min.js"></script>
+
+     <script type="text/javascript"
+             src="jquery.grewform.js"></script>
+
+     <script type="text/javascript"
+             src="http://softwaremaniacs.org/media/soft/highlight/highlight.pack.js"></script>
+
+      <script type="text/javascript">
+        $(function(){
+            $('code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
+
+            $('form').grewform({
+
+              '#first[value="show"]':{
+                  show:'#p2'
+              },
+
+              '#second[value=gogo]':{
+                  show:'#p3',
+                  add_options:{
+                      '#third':{
+                              '1':'nothing',
+                              '2':'next'
+                      }
+                    }
+              },
+
+              '#third option[value=2]:selected':{
+                  show:'#p4'
+              }
+            })
+        })
+     </script>
+
+     <link rel="stylesheet" title="Default" href="http://softwaremaniacs.org/media/soft/highlight/styles/default.css">
+  </head>
+  <body>
+  <h3>All logic declared by following code:</h3>
+  <pre class="javascript">
+<code>
+$('form').grewform({
+      '#first[value=show]':{
+          show:'#p2'
+      },
+
+      '#second[value=gogo]':{
+          show:'#p3',
+          add_options:{
+              '#third':{
+                      '1':'nothing',
+                      '2':'next'
+              }
+            }
+      },
+
+      '#third option[value=2]:selected':{
+          show:'#p4'
+      }
+})
+</code>
+  </pre>
+
+      <form action="">
+          <p id="p1">
+            <input id="first"> type 'show'
+          </p>
+
+          <p id="p2" style="display: none">
+            <input id="second"> type 'gogo'
+          </p>
+
+          <p id="p3" style="display: none">
+            <select id="third" name="form"></select>choose 'next' <br/>
+          </p>
+
+          <p id="p4" style="display: none">
+            now change any previous input <br/>
+          </p>
+      </form>
+  </body>
+</html>
+
