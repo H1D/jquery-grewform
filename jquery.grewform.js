@@ -12,38 +12,50 @@ jQuery.fn.grewform = function(options){
 
     grewForms[this] = rules
 
-    return $(this).change(function(eventObj){
-        for(var i in rules)
-            (function(form,rule,eventObj){
-                 var wait = setInterval(
-                     function() {
-                         if( !form.find().is(":animated"))
-                         {
-                             clearInterval(wait);
-                             if(rule.trigged && form.find(rule.selector).length == 0)
-                                 rule.run_unmatch_actions()
-                             else if((!rule.trigged))
-                             {
-                                 //('option:visible') always return nothing
-                                 if(form.find(rule.selector).filter('option').length > 0)
-                                 {
-                                    if(form.find(rule.selector).parent('select:visible').length > 0)
-                                        rule.run_match_actions()
-                                 }
-                                 else if(form.find(rule.selector).filter(':visible').length > 0)
-                                    rule.run_match_actions()
-                             }
-                         }
-                     },
-                     200
-                 )
-            }(form,rules[i],eventObj))
+    form.find('*').keydown(function(){
+        var wait = setInterval(function(){
+            clearInterval(wait)
+            run_rules()
+        },
+        300)
+    });
+
+    return form.change(function(){
+        run_rules()
     });
 };
 
 function debug(str)
 {
     console.log('jQuery.brForms:'+str)
+}
+
+function run_rules(){
+    for(var i in Rule.all)
+            (function(form,rule){
+                 var wait = setInterval(
+                     function() {
+                         if( !rule.form.find('*').is(":animated"))
+                         {
+                             clearInterval(wait);
+                             if(rule.trigged && rule.form.find(rule.selector).length == 0)
+                                 rule.run_unmatch_actions()
+                             else if((!rule.trigged))
+                             {
+                                 //('option:visible') always return nothing
+                                 if(rule.form.find(rule.selector).filter('option').length > 0)
+                                 {
+                                    if(rule.form.find(rule.selector).parent('select:visible').length > 0)
+                                        rule.run_match_actions()
+                                 }
+                                 else if(rule.form.find(rule.selector).filter(':visible').length > 0)
+                                    rule.run_match_actions()
+                             }
+                         }
+                     },
+                     200
+                 )
+            }(form,Rule.all[i]))
 }
 
 //constructor for rules
