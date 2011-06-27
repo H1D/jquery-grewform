@@ -12,10 +12,14 @@
      <script type="text/javascript"
              src="http://softwaremaniacs.org/media/soft/highlight/highlight.pack.js"></script>
 
-      <script type="text/javascript">
+    <script type="text/javascript">
+          $(function(){
+              $('#demo_code_displ').html($('#demo_code').html())
+              $('code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
+          })
+      </script>
+      <script type="text/javascript" id="demo_code">
         $(function(){
-            $('code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
-
             $('form').grewform({
 
               '#first[value="show"]':{
@@ -44,26 +48,7 @@
   <body>
   <h3>All logic declared by following code:</h3>
   <pre class="javascript">
-<code>
-$('form').grewform({
-      '#first[value=show]':{
-          show:'#p2'
-      },
-
-      '#second[value=gogo]':{
-          show:'#p3',
-          add_options:{
-              '#third':{
-                      '1':'nothing',
-                      '2':'next'
-              }
-            }
-      },
-
-      '#third option[value=2]:selected':{
-          show:'#p4'
-      }
-})
+<code id="demo_code_displ">
 </code>
   </pre>
 
