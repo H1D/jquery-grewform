@@ -27,17 +27,7 @@
               },
 
               '#second[value=gogo]':{
-                  show:'#p3',
-                  add_options:{
-                      '#third':{
-                              '1':'nothing',
-                              '2':'next'
-                      }
-                    }
-              },
-
-              '#third option[value=2]:selected':{
-                  show:'#p4'
+                  show:'#p3'
               }
             })
         })
@@ -46,29 +36,25 @@
      <link rel="stylesheet" title="Default" href="http://softwaremaniacs.org/media/soft/highlight/styles/default.css">
   </head>
   <body>
-  <h3>All logic declared by following code:</h3>
-  <pre class="javascript">
-<code id="demo_code_displ">
-</code>
-  </pre>
+    <form id="form" action=".">
+      <p id="p1">
+        <input id="first" value=""> type 'show'
+      </p>
 
-      <form id="form" action=".">
-          <p id="p1">
-            <input id="first" value=""> type 'show'
-          </p>
+      <p id="p2" style="display: none">
+        <input id="second"> type 'gogo'
+      </p>
 
-          <p id="p2" style="display: none">
-            <input id="second"> type 'gogo'
-          </p>
-
-          <p id="p3" style="display: none">
-            <select id="third" name="form"></select>choose 'next' <br/>
-          </p>
-
-          <p id="p4" style="display: none">
-            now change any previous input <br/>
-          </p>
-      </form>
+      <p id="p3" style="display: none">
+        now change any previous input <br/>
+      </p>
+    </form>
+    
+    <h3>All logic declared by following code:</h3>
+    <pre class="javascript">
+        <code id="demo_code_displ">
+        </code>
+    </pre>
   </body>
 </html>
 

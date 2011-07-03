@@ -8,8 +8,10 @@
 jQuery.fn.grewform = function(options){
 
     //this will allow selectors like 'input[value=foo]' to work with all jQuery versions
-    $('input').bind('keyup change',function() {
-        $(this).attr('value',this.value)
+    $('input,textarea').bind('keyup change',function(e) {
+        var codes= [33,34,36,35,45,38,40,37,39]//arrows and others
+        if(e.keyCode && $.inArray(e.keyCode,codes))//skip this keyUps to let this keys work as expected
+            $(this).attr('value',this.value)
     });
 
 
@@ -17,9 +19,7 @@ jQuery.fn.grewform = function(options){
 
     for (var rule_key in options)
     {
-        var rule_keys = arrayfy(rule_key)
-        for (var i in rule_keys)
-            var rule = new Rule(rule_keys[i],form,options[rule_key])
+        var rule = new Rule(rule_key,form,options[rule_key])
     }
 
     //run in 300ms after keyup
@@ -58,8 +58,10 @@ function run_rules(){
                          if( !rule.form.find('*').is(":animated"))
                          {
                              clearInterval(wait);
-                             if(rule.trigged && rule.form.find(rule.selector).length == 0)
+                             if(rule.unmatches())
+                             {
                                  rule.run_unmatch_actions()
+                             }
                          }
                      },
                      200
@@ -74,15 +76,8 @@ function run_rules(){
                          if( !rule.form.find('*').is(":animated"))
                          {
                              clearInterval(wait);
-                             if((!rule.trigged))
+                             if(rule.matches())
                              {
-                                 //('option:visible') always return nothing
-                                 if(rule.form.find(rule.selector).filter('option').length > 0)
-                                 {
-                                    if(rule.form.find(rule.selector).parent('select:visible').length > 0)
-                                        rule.run_match_actions()
-                                 }
-                                 else if(rule.form.find(rule.selector).filter(':visible').length > 0)
                                     rule.run_match_actions()
                              }
                          }
@@ -116,7 +111,9 @@ function Rule(selector,form,raw_rule){
 
     this.id = Rule.id++
     this.blip = Rule.blip_ptr+this.id
-    this.selector = selector          //selector of the rule
+    this.selectors = arrayfy((''+selector).split('AND')) //selector of the rule
+    $.each(this.selectors,function(selectors){return function(k,v){selectors[k]=(''+v).trim()}}(this.selectors))//trim each selector
+    this.selector = arr_to_selector(this.selectors) //selector of the rule
     this.trigged = false       //indicates is rule trigged or not
     this.match_actions = []
     this.unmatch_actions = []
@@ -128,6 +125,43 @@ function Rule(selector,form,raw_rule){
         generate_actions(action_key,form,this)
 
     //debug('created rule: '+this.selector +'['+ this.match_actions.length +'|'+this.unmatch_actions.length+']')
+
+    this.matches = function(){
+        for (var i in this.selectors)
+        {
+            var selector = this.selectors[i]
+            if((!this.trigged))
+            {
+                 //('option:visible') always return nothing
+                 if(this.form.find(selector).filter('option:first').length > 0)
+                 {
+                    if(this.form.find(selector).parent('select:visible:first').length == 0)
+                        return false
+                 }
+                 else if(this.form.find(selector).filter(':visible:first').length == 0)
+                     return false
+            }
+            else
+            {
+                return false
+            }
+        }
+        return true
+    }
+
+    this.unmatches = function(){
+        if(!this.trigged)
+                return false
+
+        for (var i in this.selectors)
+        {
+            var selector = this.selectors[i]
+            if(this.form.find(selector+':first').length == 0)
+                return true
+        }
+        
+        return false
+    }
 
     this.run_match_actions = function(){
         //debug('match: '+this.selector)
@@ -304,6 +338,66 @@ function generate_actions(key,form,rule)
                 }(form.find(rule.raw[key]))
             )
             break
+        case 'enable':
+            rule.match_actions.push(
+                function(elems){
+                    return function(){
+                        //debug('enable action');
+                        elems.removeAttr('disabled');
+                    }
+                }(form.find(rule.raw[key]))
+            )
+
+            rule.unmatch_actions.push(
+                function(elems){
+                    return function(){
+                        //debug('enable action rollback');
+                        cascade_unmatch(elems);
+                        elems.attr('disabled','disabled');
+                    }
+                }(form.find(rule.raw[key]))
+            )
+            break
+        case 'check':
+            rule.match_actions.push(
+                function(elems){
+                    return function(){
+                        //debug('check action');
+                        elems.attr('checked','checked');
+                    }
+                }(form.find(rule.raw[key]))
+            )
+
+            rule.unmatch_actions.push(
+                function(elems){
+                    return function(){
+                        //debug('check action rollback');
+                        cascade_unmatch(elems);
+                        elems.removeAttr('checked');
+                    }
+                }(form.find(rule.raw[key]))
+            )
+            break
+        case 'uncheck':
+            rule.match_actions.push(
+                function(elems){
+                    return function(){
+                        //debug('uncheck action');
+                        elems.removeAttr('checked');
+                    }
+                }(form.find(rule.raw[key]))
+            )
+
+            rule.unmatch_actions.push(
+                function(elems){
+                    return function(){
+                        //debug('uncheck action rollback');
+                        cascade_unmatch(elems);
+                        elems.attr('checked','checked');
+                    }
+                }(form.find(rule.raw[key]))
+            )
+            break
         case 'custom':
             rule.match_actions.push(
                 function(fn,context){
@@ -337,4 +431,13 @@ function arrayfy(obj)
         return [obj];
 
     return obj;
+}
+
+function arr_to_selector(arr)
+{
+    res = ''
+    for(var i in arr)
+        res += (''+arr[i]).trim() + ','
+
+    return res
 }
