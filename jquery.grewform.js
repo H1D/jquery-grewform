@@ -118,6 +118,7 @@ function Rule(selector,form,raw_rule){
     this.match_actions = []
     this.unmatch_actions = []
     this.raw = raw_rule
+    this.raw_selector = selector
     this.form = form
 
     //extract actions
@@ -164,7 +165,7 @@ function Rule(selector,form,raw_rule){
     }
 
     this.run_match_actions = function(){
-        //debug('match: '+this.selector)
+        debug('match: '+this.raw_selector)
 
         this.trigged = true
         //mark elements that rule trigged, it's need for cascade actions
@@ -175,7 +176,7 @@ function Rule(selector,form,raw_rule){
     this.run_match_actions.first_run = true
 
     this.run_unmatch_actions = function(){
-        //debug('unmatch: '+this.selector)
+        debug('unmatch: '+this.raw_selector)
 
         this.trigged = false
         jQuery('.'+this.blip).removeClass(this.blip)
@@ -195,7 +196,14 @@ function generate_actions(key,form,rule)
                 function(elems){
                     return function(){
                         //debug('show action');
-                        elems.slideDown();
+                        if(elems.is('option'))
+                        {
+                            elems.show();
+                        }
+                        else
+                        {
+                            elems.slideDown();
+                        }
                     }
                 }(form.find(rule.raw[key]))
             )
@@ -205,7 +213,14 @@ function generate_actions(key,form,rule)
                     return function(){
                         //debug('show action rollback');
                         cascade_unmatch(elems);
-                        elems.slideUp();
+                        if(elems.is('option'))
+                        {
+                            elems.hide();
+                        }
+                        else
+                        {
+                            elems.slideUp();
+                        }
                     }
                 }(form.find(rule.raw[key]))
             )
@@ -215,7 +230,14 @@ function generate_actions(key,form,rule)
                 function(elems){
                     return function(){
                         //debug('hide action');
-                        elems.slideUp();
+                        if(elems.is('option'))
+                        {
+                            elems.hide();
+                        }
+                        else
+                        {
+                            elems.slideUp();
+                        }
                     }
                 }(form.find(rule.raw[key]))
             )
@@ -225,7 +247,14 @@ function generate_actions(key,form,rule)
                     return function(){
                         //debug('hide action rollback');
                         cascade_unmatch(elems);
-                        elems.slideDown();
+                        if(elems.is('option'))
+                        {
+                            elems.show();
+                        }
+                        else
+                        {
+                            elems.slideDown();
+                        }
                     }
                 }(form.find(rule.raw[key]))
             )
@@ -417,7 +446,15 @@ function generate_actions(key,form,rule)
 function cascade_unmatch(elements)
 {
     jQuery.each(elements,function(k,v){
-        var classes = jQuery(this).attr('class').split(' ')
+        if(jQuery(this).attr('class') !== undefined)
+        {
+            var classes = jQuery(this).attr('class').split(' ')
+        }
+        else
+        {
+            return;
+        }
+        
         jQuery.each(classes,function(k,v){
             Rule.unmtach_by_blip(v)
         })
