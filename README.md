@@ -2,7 +2,7 @@ Quickstart
 ----------
 	`$('form selector').grewform({
 		//Selectors are jQuery and CSS3 compatible. You can select inputs by values setted runtime: 'input[value=foo]'
-		'rule_selector' or ['rule_selector_1','rule_selector_2']: //if array rule will be created for each selector
+		'rule_selector' or 'rule_selector_1 AND rule_selector_2]:
 		{		
 			//all actions are optional and rolls back automatically
 			show:'elements_selector',	//showing elements
