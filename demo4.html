@@ -89,25 +89,11 @@
     });
     </script>
     <link rel="stylesheet" title="Default" href="http://softwaremaniacs.org/media/soft/highlight/styles/default.css">
-    <style type="text/css">
-        p{
-            display:none;
-        }
-
-        form
-        {
-            margin-left: 20%;
-        }
-
-        form label
-        {
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" title="Default" href="css.css">
 </head>
 <body>
 
-    <h1 class="green">Order a psychological consultation</h1>
+    <h1 class="green">Order psychological consultation</h1>
     <form method="POST" id="reg_form" action=".">
         <div class="form-item">
             <b id="live_reminder">Live consultation available only for NY city!</b>
@@ -119,7 +105,7 @@
             </div>
 
             <select name="form" id="id_form">
-                <option>-------</option>
+                <option>-choose option-</option>
                 <option value="live">Live</option>
                 <option value="remote">Remote</option>
             </select>
@@ -132,7 +118,7 @@
             </div>
 
             <select name="type" id="id_type">
-                <option>-------</option>
+                <option>-choose option-</option>
             </select>
         </div>
 
@@ -150,7 +136,7 @@
                 <label for="id_numb">Number</label>
             </div>
             <select name="numb" id="id_numb">
-                <option>-------</option>
+                <option>-choose option-</option>
                 <option value="once">Once</option>
                 <option value="month">Month package</option>
             </select>

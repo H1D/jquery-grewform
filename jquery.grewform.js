@@ -1,5 +1,5 @@
 /*!
- * jQuery GrewForm Plugin v0.0.1
+ * jQuery GrewForm Plugin v0.0.2
  *
  * Copyright 2011, Artem Suschev
  * Grandcapital Ltd.

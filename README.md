@@ -1,13 +1,16 @@
 Quickstart
 ----------
 	`$('form selector').grewform({
-		//Selectors are jQuery and CSS3 compatible. You can select inputs by values setted runtime: 'input[value=foo]'
+		//Selectors are jCSS/jQuery compatible. You can select inputs by values setted runtime: 'input[value=foo]'
 		'rule_selector' or 'rule_selector_1 AND rule_selector_2]:
 		{		
 			//all actions are optional and rolls back automatically
-			show:'elements_selector',	//showing elements
-			hide:'elements_selector',	//hiding elements
-			disable:'elements selecotr'	//adding disabled="disabled" to attributes
+			show:'elements_selector',	//showing elements (slideDown; slideUp on rollback)
+			hide:'elements_selector',	//hiding elements (slideUp; slideDown on rollback)
+			disable:'elements selecotr'	//adding disabled="disabled" to attributes (remove on rollback)
+			enable:'elements selecotr'	//removing disabled from attributes (adding on rollback)
+			check:'elements selecotr'	//adding disabled="checked" to attributes (remove on rollback)
+			uncheck:'elements selecotr'	//removing checked from attributes (adding on rollback)
 			set_value:<elements_selector>,	//setting value (<input> and <select> are supported)
 			add_options: 			//for adding options to selects
 			{
@@ -22,11 +25,8 @@ Quickstart
 			custom:		//for custom actions
 			{
 				match:function,		//will be called when rule selector matches at least one element
-				unmatch:function,	//will be called when rule selector matches nothing
+				unmatch:function,	//will be called on rollback
 			}
 
 	})`
-Check out demo.html
-
-
-
+Check out [demos](http://h1d-demos.appspot.com/static/jquery-grewform/index.html)
