@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	
+	<title>плагин для «живых» форм / jQuery / Хабрахабр</title>
+
+	<link href="http://habrahabr.ru/css/1309875325/all.css" rel="stylesheet" media="all" />
+
+<!-- ie9 -->
+    <meta name="application-name" content="Хабрахабр" /> 
+    <meta name="msapplication-tooltip" content="Хабрахабр" /> 
+    <meta name="msapplication-starturl" content="http://habrahabr.ru/" /> 
+
+    <meta name="msapplication-task" content="name=посты;action-uri=http://habrahabr.ru/;icon-uri=http://habrahabr.ru/favicon.ico"/>
+    <meta name="msapplication-task" content="name=q&a;action-uri=http://habrahabr.ru/qa/;icon-uri=http://habrahabr.ru/favicon.ico"/>
+    <meta name="msapplication-task" content="name=блоги;action-uri=http://habrahabr.ru/bloglist/;icon-uri=http://habrahabr.ru/favicon.ico"/>
+    <meta name="msapplication-task" content="name=люди;action-uri=http://habrahabr.ru/people/;icon-uri=http://habrahabr.ru/favicon.ico"/>
+    <meta name="msapplication-task" content="name=компании;action-uri=http://habrahabr.ru/companies/;icon-uri=http://habrahabr.ru/favicon.ico"/>
+<!-- /ie9 -->
+
+	
+	
+	
+	
+	<link rel="shortcut icon" href="http://habrahabr.ru/i/favicon.ico" />
+	<link rel="image_src" href="http://habrahabr.ru/i/logo.gif" />
+	
+	
+		<meta name="description" content="Статья посвящена плагину, который упрощающает жизнь client-side программиста.  При заполнении формы случается так, что учитывая введенные данные, форму нужно..." /> 
+	
+
+	
+	<link title="" type="application/rss+xml" rel="alternate" href="http://habrahabr.ru/rss/blogs/jquery/123279/f1b88f2e165d192b224944a34afbcd14/"/>
+
+	<!--[if IE 6]><link rel="stylesheet" href="http://habrahabr.ru/css/1309875325/ie6.css" media="all" /><![endif]-->
+	<!--[if IE 7]><link rel="stylesheet" href="http://habrahabr.ru/css/1309875325/ie7.css" media="all" /><![endif]-->
+	<!--[if IE ]><link rel="stylesheet" href="http://habrahabr.ru/css/1309875325/ie.css" media="all" /><![endif]-->
+	
+	
+	<link href="/css/1309875325/karma.css" rel="stylesheet" media="all" />
+	<link href="/css/1309875325/profile.css" rel="stylesheet" media="all" />
+	
+	<link href="/css/1309875325/sidebar/category_blogs.css" rel="stylesheet" media="all" />
+	<link href="/css/1309875325/sidebar/best_company.css" rel="stylesheet" media="all" />
+
+	<link rel="help" href="http://habrahabr.ru/info/help/"/>
+	<link rel="search" href="http://habrahabr.ru/search/"/>
+	<link rel="home" href="http://habrahabr.ru/"/>
+	<script type="text/javascript" src="http://habrahabr.ru/js/1309875325/mootools-1.2-core-yc.js"></script>
+	<script type="text/javascript" src="http://habrahabr.ru/js/1309875325/system.js"></script>
+	<script type="text/javascript" src="http://habrahabr.ru/js/1309875325/tm/init.js"></script>
+	<script type="text/javascript" src="http://habrahabr.ru/js/1309875325/common.js"></script>
+	
+	<script type="text/javascript" src="http://habrahabr.ru/js/1309875325/all.js"></script>
+	
+		
+
+	<script type="text/javascript" src="http://habrahabr.ru/js/1309875325/tm/validation.js"></script>
+	<script type="text/javascript" src="http://habrahabr.ru/js/1309875325/tm/xmlhandler.js"></script>
+	<script type="text/javascript" src="http://habrahabr.ru/js/1309875325/tm/controls/control.js"></script>
+	<script type="text/javascript" src="http://habrahabr.ru/js/1309875325/tm/forms/favourites_add.js"></script>
+	<script type="text/javascript" src="http://habrahabr.ru/js/1309875325/tm/controls/button.js"></script>
+	<script type="text/javascript" src="http://habrahabr.ru/js/1309875325/tm/form.js"></script>
+	<script type="text/javascript" src="http://habrahabr.ru/js/1309875325/autosuggest.js"></script>
+	<script type="text/javascript" src="http://habrahabr.ru/js/1309875325/highlight.js"></script>
+	
+	<script type="text/javascript" src="/js/1309875325/commentForm.js"></script>
+	<script type="text/javascript" src="/js/1309875325/voting.js"></script>
+	<script type="text/javascript" src="/js/1309875325/swfobject.js"></script>
+	<script type="text/javascript" src="/js/1309875325/postsHandler.js"></script>
+	<script type="text/javascript" src="/js/1309875325/habraWYG.js"></script>
+	<script type="text/javascript" src="/js/1309875325/friending.js"></script>
+	
+
+		
+</head>
+
+<body id="main-page" class="blogs blog-panel  " lang="ru">
+
+<div class="hentry ">
+
+			<h2 class="entry-title single-entry-title">
+				
+				
+				<span class="double_locked" title="Черновик"></span>
+				
+
+				
+
+				
+					
+					
+						<span title="http://habrahabr.ru/blogs/jquery/123279/" class="topic">плагин для «живых» форм</span>
+					
+				
+
+				 <a title="Редактировать хабратопик" class="edit" href="http://habrahabr.ru/edit/topic/123279/"><img src="/i/topic_edit.gif" width="16" height="16" alt="Редактировать"></a>
+
+				
+				
+			</h2>
+
+			
+
+<div class="content">
+	<img src="http://habrastorage.org/storage1/0605b38b/dd58aabb/65a04050/281940d8.jpeg" align="left">Статья посвящена плагину, который упрощающает жизнь client-side программиста.<br>
+<br>
+При заполнении формы случается так, что учитывая введенные данные, форму нужно менять (прятать и показывать поля). Простейший пример: при заказе доставки товара пользователь выбрал «самовывоз», значит поля про адрес доставки можно спрятать, зато было бы здорово показать карту проезда для самовывоза.<br>
+<br>
+<h5>И что дальше</h5><br>
+Часто такая логика остается без реализации, однако если вы заботитесь о <s>конверсии...</s> своих пользователях, то делать это нужно.<br>
+<br>
+Первый стандартный подход это сделать некий пошаговый мастер, где форма для каждого шага генерируется на стороне сервера. По-моему мнению это самый неудачный вариант, так как требует муторной работы по разбиению на шаги, написанию тонны кода да удовольствия от работы с такой формой мало.<br>
+<br>
+Второй подход это писать «портянки» javascript'а который всю эту логику реализует на стороне клиента. Особенно грустно писать «каскадную» логику типа «если ввели <i>a</i> в поле A, показать B, если ввели <i>c</i> в поле B, то показать D. Если в A ввели что-то другое, спрятать B, а потом D».<br>
+<br>
+Оба варианта нельзя назвать <s>православными</s> удобными. Прежде всего потому что логика реализуется <b>императивным</b> стилем вместо уместного для таких случаев <b>декларативного</b>. Но выход есть!<br>
+<br>
+<a name="habracut"></a><br>
+<br>
+<h5>Решение</h5><br>
+В общем когда возникла потребность реализовывать еще одну такую форму, то было решено написать наконец плагин для jQuery который бы:<br>
+<ul>
+<li>реагировал на заполнение полей формы</li>
+<li>позволял описать стандартную логику типа <i>показать</i>, <i>спрятать</i>,<i>добавить вариант в select</i> в одну-две строки</li>
+<li>сам бы заботился о каскадном выполнении действий и их откате</li>
+<li>требовал бы для изучения пару минут</li>
+</ul><br>
+<br>
+Получившийся велосипед я назвал jQuery.grewform (типа <i>растущая</i> форма). Без разглагольствований – простейший <a href="http://h1d-demos.appspot.com/static/jquery-grewform/demo3.html">пример</a>. Опишем реализованную логику русским языком:<br>
+<b><pre><code class=" bash">Если  <span class="comment">#first имеет значение "show", то нужно показывать #p2. Если #second имеет значение "gogo", то нужно показывать #p3.</span></code></pre></b><br>
+Теперь посмотрим как эта логика описана с использованием плагина:<br>
+<pre><code class="javascript">$(<span class="string">'form'</span>).grewform({
+
+    <span class="comment">//Если  #first имеет значение "show", то нужно показывать #p2</span>
+    <span class="string">'#first[value=show]'</span>:{
+        show:<span class="string">'#p2'</span>
+    },
+
+    <span class="comment">//Если #second имеет значение "gogo", то нужно показывать #p3</span>
+    <span class="string">'#second[value=gogo]'</span>:{
+        show:<span class="string">'#p3'</span>
+    }
+
+})
+</code></pre><br>
+<br>
+<h5>Подробнее</h5><br>
+Далее идёт подробное описание работы плагина. Если вам всё более-менее понятно из приведенного выше примерчика, можете пропустить этот раздел статьи и перейти к описанию возможностей.<br>
+Поведение плагина задается набором правил. Каждое правило состоит из терма и набора действий. После инициализации, а так при каждом изменении формы плагин проверяет терм каждого правила. При проверке определяется соответствие терма текущему состоянию формы. Каждое правило может оказаться в одном из трех положений:<br>
+<ol>
+<li>при прошлой проверке терм не соответствовал состоянию, а теперь <b>соответствует</b></li>
+<li>при прошлой проверке терм соответствовал состоянию, а теперь <b>не соответствует</b></li>
+<li>соответствие терма состоянию формы <b>не изменилось</b></li>
+</ol><br>
+<b>В первом случае</b> правило помечается как <i>сработавшее</i>, элементы <a href="http://ru.wikipedia.org/wiki/Document_Object_Model">DOM</a> описанные в терме (по сути изменение этих элементов привело к срабатыванию правила) получают метку (добавляется класс) показывающую что на них «висит» сработавшее правило <i>такое-то</i>. После чего запускаются по очереди все описанные в правиле действия. <b>Второй случай</b> более интересен. Аналогично, правило помечается как уже <i>не сработавшее</i>, пометки с элементов удаляются. После чего запускаются <i>негативы</i> действий описанных в правиле (показали что-то? Теперь спрячем!), причем если в процессе в DOM прячутся или удаляются какие-то элементы, то сначала проверяется <br>
+не «висит» ли на них каких-либо правил (см. случай №1), если это так то запускается процесс «отката» для этих правил (работает как случай №2). В <b>третьем</b> случае ничего не происходит.<br>
+Стоит отметить, что про проверке соответствия термов учитываются только <b>видимые</b> элементы формы.<br>
+<br>
+<h5>Возможности</h5><br>
+Выражение по которому определяется не пора ли запускать действия (терм) это CSS/jQuery-совместимый селектор. Если в форме находятся элементы соответствующие селектору, то запускаются действия этого правила. Иногда нужно чтобы правило сработало только при двойном (тройном, четверном...) условии, для этого можно использовать функцию <i>AND</i> (<a href="http://h1d-demos.appspot.com/static/jquery-grewform/demo3.html">пример</a>). Это единственное изменение синтаксиса, а точнее дополнение.<br>
+В первом примере используется селектор <i>[value=show]</i>. Особо хорошо знающие jQuery справедливо скажут, что такие селекторы не должны работать если <i>value</i> был изменен в процессы выполнения кода. Однако плагин поддерживает актуальное состояние атрибута <i>value</i> для всех <code>&lt;input/&gt;</code>, соответсвенно всё работает как надо.<br>
+Перейдём к описанию разновидностей действий. Вот их список с описанием синтаксиса:<br>
+<pre><code class="javascript">show:'elements_selector',   //показать элементы (slideDown; slideUp при откате)
+hide:'elements_selector',    //спрятать элементы (slideUp; slideDown при откате)
+disable:'elements_selector' //добавляет disabled="disabled" к атрибутам элемента (убирает при откате)
+enable:'elements_selector' //убирает атрибут элемента disabled  (добавляет disabled="disabled" при откате)
+check:'elements_selector'  //добавляет checked="checked" к атрибутам элемента (убирает при откате)
+uncheck:'elements_selector' //убирает атрибут элемента checked  (добавляет checked="checked" при откате)
+set_value:'elements_selector',  //задаёт value для &lt;input&gt;, для &lt;select&gt; добавляет selected="selected" у соответствующего &lt;option&gt;
+add_options:            //добавляет &lt;option&gt; в &lt;select&gt;
+{
+    '&lt;select&gt; selector':{
+                  'value_1':'display_value_1', //соответствует &lt;option value="1"&gt;display_value_1&lt;/option&gt;
+                  'value_2':'display_value_2',
+          ...
+            }
+    or
+    '&lt;select&gt; selector': function   //должна возвращать объект (формат - {'value_1':'display_value_1',...})
+},
+custom:     //для особых случаев
+{
+    match:function,       //будет вызвана при срабатывании правила
+    unmatch:function,   //будет вызвана при откате
+}
+</code></pre><br>
+<br>
+Как было сказано выше описываются только <i>позитивные</i> события, т.е. только те что должны произойти при срабатывании правила. Действия <i>отката</i> вычисляются автоматически.<br>
+Как видно почти все действия имеют следующий синтаксис:<br>
+<b>название_действия:'селектор элементов'</b><br>
+Синтаксис селектора так-же полностью CSS/jQuery-совместимый. Над элементами найденными по селетору будет произведено указанное действие. Собственно все действия описаны выше в коде.<br>
+<br>
+Под конец самый большой и мощный пример – <a href="http://h1d-demos.appspot.com/static/jquery-grewform/demo4.html">форма заказа психологической консультации</a> =)<br>
+<br>
+<h5>Need help</h5><br>
+Я начал писать этот плагин 2 недели назад и мы уже используем его в 2 формах на продакшне. Буду очень благодарен, если вы попробуете этот плагин и расскажите чего вам не хватает.<br>
+<br>
+Ссылки:<br>
+<ul>
+<li> <a href="http://h1d-demos.appspot.com/static/jquery-grewform/index.html">Все примеры разом</a> </li>
+<li> <a href="http://github.com/H1D/jquery-grewform">Репозитарий проекта на гитхабе</a> </li>
+</ul>
+
+	
+
+	
+
+	
+</div>
+
+
+
+
+			
+<ul class="tags" title="Теги к записи">
+	<li><a href="http://habrahabr.ru/tag/jQuery/" rel="tag">jQuery</a></li><li>, <a href="http://habrahabr.ru/tag/plugin/" rel="tag">plugin</a></li><li>, <a href="http://habrahabr.ru/tag/forms/" rel="tag">forms</a></li><li>, <a href="http://habrahabr.ru/tag/конверсия/" rel="tag">конверсия</a></li><li>, <a href="http://habrahabr.ru/tag/плагин/" rel="tag">плагин</a></li>
+</ul>
+
+			
+<div class="entry-info vote_holder" id="infopanel123279">
+
+		<!--  Закруглённые уголки -->
+
+		<div class="corner tl"></div><div class="corner tr"></div>
+
+		<div class="entry-info-wrap">
+			
+			
+				<div class="voting   mine expired">
+					<div class="can-vote"><a title="Нравится" href="#" class="vote_plus" onclick="return Voter.vote(event, this, 'post', 'plus');"></a></div>
+					<div class="cannot-vote"><span title="Нравится" class="vote_plus"></span></div>
+					<div class="mark"><span title="Всего 0 голосов: ↑0 и ↓0">0</span></div>
+					<div class="can-vote"><a title="Не нравится" href="#" class="vote_minus" onclick="return Voter.vote(event, this, 'post', 'minus');"></a></div>
+					<div class="cannot-vote"><span class="vote_minus"></span></div>
+				</div>
+			
+			<div class="published"><!-- Дата в формате ISO пихается в title -->
+				<span>не публиковался</span>
+			</div>
+
+			
+			
+			<div class="to-favs js-to_favs_holder">
+				<a class="js-to_favs_add" title="Добавить в избранное" href="#" onclick="favsHandler.favoritesSend(this, 'posts', 123279); return false;"> </a>
+			</div>
+			
+			<div class="favs_count" title="Количество пользователей, добавивших пост в избранное"></div>
+			<div class="twitter">
+				<a href="http://twitter.com/intent/tweet?text=http://habr.ru/p/123279/+плагин+для+«живых»+форм+%23habr" title="Опубликовать ссылку на пост в Twitter" target="_blank"></a>
+			</div>
+			<div class="facebook">
+				<a href="http://www.facebook.com/sharer.php?u=http://habrahabr.ru/blogs/jquery/123279/" title="Опубликовать ссылку на пост в Facebook" onclick="window.open(this.href, 'Опубликовать ссылку на пост в Facebook', 'width=800,height=300'); return false"></a>
+			</div>
+			
+
+			
+			
+
+			
+
+			
+			
+				<div class="vcard author full">
+					<a title="Автор текста" href="http://HID.habrahabr.ru/" class="fn nickname url"><span>HID</span></a>
+				</div>
+			
+			
+
+			
+
+			
+
+
+		</div>
+
+		<div class="corner bl"></div><div class="corner br"></div>
+</div>
+
+
+
+			
+		</div>
+</body>
+</html>
