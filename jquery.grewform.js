@@ -8,10 +8,10 @@
 jQuery.fn.grewform = function(options){
 
     //this will allow selectors like 'input[value=foo]' to work with all jQuery versions
-    $('input,textarea').bind('keyup change',function(e) {
+    jQuery('input,textarea').live('keyup change',function(e) {
         var codes= [33,34,36,35,45,38,40,37,39]//arrows and others
         if(e.keyCode && jQuery.inArray(e.keyCode,codes)>-1)//skip this keyUps to let this keys work as expected
-            $(this).attr('value',this.value)
+            jQuery(this).attr('value',this.value)
     });
 
 
@@ -32,7 +32,7 @@ jQuery.fn.grewform = function(options){
     });
 
     //run on DOM loaded
-    $(document).ready(function(){
+    jQuery(document).ready(function(){
         run_rules()
     });
 
@@ -112,7 +112,7 @@ function Rule(selector,form,raw_rule){
     this.id = Rule.id++
     this.blip = Rule.blip_ptr+this.id
     this.selectors = arrayfy((''+selector).split('AND')) //selector of the rule
-    $.each(this.selectors,function(selectors){return function(k,v){selectors[k]=(''+v).trim()}}(this.selectors))//trim each selector
+    jQuery.each(this.selectors,function(selectors){return function(k,v){selectors[k]=(''+v).trim()}}(this.selectors))//trim each selector
     this.selector = arr_to_selector(this.selectors) //selector of the rule
     this.trigged = false       //indicates is rule trigged or not
     this.match_actions = []
@@ -268,7 +268,7 @@ function generate_actions(key,form,rule)
                         var rule=this
                         jQuery.each(values,function(selector,value){
                             jQuery.each(rule.form.find(selector),function(){
-                                var tagName = $(this).tagName
+                                var tagName = jQuery(this).tagName
 
                                 if(tagName == 'select')
                                 {
@@ -276,7 +276,7 @@ function generate_actions(key,form,rule)
                                      elems.find('option [value='+value+']').attr('selected','selected')
                                 }
                                 else
-                                    $(this).val(value)
+                                    jQuery(this).val(value)
                             })
                         })
                     }
