@@ -10,7 +10,7 @@ jQuery.fn.grewform = function(options){
     //this will allow selectors like 'input[value=foo]' to work with all jQuery versions
     jQuery('input,textarea').live('keyup change',function(e) {
         var codes= [33,34,36,35,45,38,40,37,39]//arrows and others
-        if(e.keyCode && jQuery.inArray(e.keyCode,codes)>-1)//skip this keyUps to let this keys work as expected
+        if(e.keyCode && jQuery.inArray(e.keyCode,code)<0)//skip this keyUps to let this keys work as expected
             jQuery(this).attr('value',this.value)
     });
 
