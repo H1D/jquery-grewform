@@ -3,7 +3,8 @@
  *
  * Copyright 2011, Artem Suschev
  * Grandcapital Ltd.
- * 
+ *  
+ * Licensed under the MIT license (license.txt)
  */
 
 jQuery.fn.grewform = function(options){
@@ -45,7 +46,7 @@ jQuery.fn.grewform = function(options){
 
 function debug(str)
 {
-    console.log('jQuery.brForms >>> '+str)
+    //console.log('jQuery.brForms >>> '+str)
 }
 
 function run_rules(){
