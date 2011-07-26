@@ -30,3 +30,4 @@ Quickstart
 
 	})`
 Check out [demos](http://h1d-demos.appspot.com/static/jquery-grewform/index.html)
+More help in [article(RUS)](http://habrahabr.ru/blogs/jquery/123940/)
