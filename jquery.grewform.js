@@ -113,7 +113,7 @@ function Rule(selector,form,raw_rule){
     this.id = Rule.id++
     this.blip = Rule.blip_ptr+this.id
     this.selectors = arrayfy((''+selector).split('AND')) //selector of the rule
-    jQuery.each(this.selectors,function(selectors){return function(k,v){selectors[k]=(''+v).trim()}}(this.selectors))//trim each selector
+    jQuery.each(this.selectors,function(selectors){return function(k,v){selectors[k]=jQuery.trim(''+v)}}(this.selectors))//trim each selector
     this.selector = arr_to_selector(this.selectors) //selector of the rule
     this.trigged = false       //indicates is rule trigged or not
     this.match_actions = []
@@ -475,7 +475,7 @@ function arr_to_selector(arr)
 {
     res = ''
     for(var i in arr)
-        res += (''+arr[i]).trim() + ','
+        res += jQuery.trim(''+arr[i]) + ','
 
     return res
 }
