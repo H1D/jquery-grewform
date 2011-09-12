@@ -17,7 +17,9 @@ jQuery.fn.grewform = function(options){
     });
 
 
-    var form = jQuery(this)
+    //var form = jQuery(this)
+    var form = this
+
 
     for (var rule_key in options)
     {
