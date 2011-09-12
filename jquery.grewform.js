@@ -16,17 +16,14 @@ jQuery.fn.grewform = function(options){
             jQuery(this).attr('value',this.value)
     });
 
-
-    //var form = jQuery(this)
     var form = this
-
 
     for (var rule_key in options)
     {
         var rule = new Rule(rule_key,form,options[rule_key])
     }
 
-    //run in 300ms after keyup
+    //wait 300ms after keyup
     form.find('*').keyup(function(){
         var wait = setInterval(function(){
             clearInterval(wait)
@@ -55,40 +52,54 @@ function run_rules(){
     //debug(checking rules')
 
     //first run all unmatch actions
-    for(var i in Rule.all)
-            (function(rule){
+    jQuery.each(Rule.all,function(i,rule){
+        (function(rule){
                  var wait = setInterval(
                      function() {
-                         if( !rule.form.find('*').is(":animated"))
-                         {
-                             clearInterval(wait);
-                             if(rule.unmatches())
-                             {
-                                 rule.run_unmatch_actions()
-                             }
-                         }
+                        try{
+                            if( !Rule.form.find('*').is(":animated"))
+                            {
+                                clearInterval(wait);
+                                if(rule.unmatches())
+                                {
+                                    rule.run_unmatch_actions()
+                                }
+                            }
+                        } 
+                        catch(e)
+                        {
+                            clearInterval(wait);                            
+                        }
                      },
                      200
                  )
-            }(Rule.all[i]))
-
+        }(rule))
+    })
+    
     //then run all math actions
-    for(var i in Rule.all)
+    jQuery.each(Rule.all,function(i,rule){
             (function(rule){
                  var wait = setInterval(
                      function() {
-                         if( !rule.form.find('*').is(":animated"))
-                         {
-                             clearInterval(wait);
-                             if(rule.matches())
-                             {
+                        try{
+                            if( !Rule.form.find('*').is(":animated"))
+                            {
+                                clearInterval(wait);
+                                if(rule.matches())
+                                {
                                     rule.run_match_actions()
-                             }
-                         }
+                                }
+                            }
+                        }
+                        catch(e)
+                        {
+                            clearInterval(wait);
+                        }
                      },
                      200
                  )
-            }(Rule.all[i]))
+            }(rule))
+    })
 }
 
 //constructor for rules
@@ -101,55 +112,56 @@ function Rule(selector,form,raw_rule){
         Rule.blip_ptr = 'hgo_grewform_rule'
         //function for cascade unmatch
         Rule.unmtach_by_blip = function(blip){
-                                   for(var k in Rule.all)
-                                       if(Rule.all[k].blip === blip)
+                                   jQuery.each(Rule.all,function(i,rule){
+                                       if(rule.blip === blip)
                                        {
                                            //debug('unmtach_by_blip '+blip)
-                                           Rule.all[k].run_unmatch_actions()
+                                           rule.run_unmatch_actions()
                                        }
+                                   })
                                }
 
         //All rules (hello Django:])
         Rule.all = []
+        Rule.form = form
     }
 
     this.id = Rule.id++
     this.blip = Rule.blip_ptr+this.id
-    this.selectors = arrayfy((''+selector).split('AND')) //selector of the rule
+    this.selectors = arrayfy((''+selector).split('AND')) //selectors of the rule
     jQuery.each(this.selectors,function(selectors){return function(k,v){selectors[k]=jQuery.trim(''+v)}}(this.selectors))//trim each selector
     this.selector = arr_to_selector(this.selectors) //selector of the rule
     this.trigged = false       //indicates is rule trigged or not
     this.match_actions = []
     this.unmatch_actions = []
     this.raw = raw_rule
-    this.raw_selector = selector
-    this.form = form
+    this.raw_selector = selector    
 
-    //extract actions
+    //extract actions    
     for(var action_key in raw_rule)
         generate_actions(action_key,form,this)
 
     //debug('created rule: '+this.selector +'['+ this.match_actions.length +'|'+this.unmatch_actions.length+']')
 
     this.matches = function(){
-        for (var i in this.selectors)
+        for(var i=0; i<this.selectors.length;i++)
         {
             var selector = this.selectors[i]
             if((!this.trigged))
             {
                  //('option:visible') always return nothing
-                 if(this.form.find(selector).filter('option:first').length > 0)
+                 if(Rule.form.find(selector).filter('option:first').length > 0)
                  {
-                    if(this.form.find(selector).parent('select:visible:first').length == 0)
+                    if(Rule.form.find(selector).parent('select:visible:first').length == 0)
                         return false
                  }
-                 else if(this.form.find(selector).filter(':visible:first').length == 0)
+                 else if(Rule.form.find(selector).filter(':visible:first').length == 0)
                      return false
             }
             else
             {
                 return false
-            }
+            }        
         }
         return true
     }
@@ -157,11 +169,11 @@ function Rule(selector,form,raw_rule){
     this.unmatches = function(){
         if(!this.trigged)
                 return false
-
-        for (var i in this.selectors)
+        
+        for(var i=0; i<this.selectors.length;i++)
         {
             var selector = this.selectors[i]
-            if(this.form.find(selector+':first').length == 0)
+            if(Rule.form.find(selector+':first').length == 0)
                 return true
         }
         
@@ -173,9 +185,12 @@ function Rule(selector,form,raw_rule){
 
         this.trigged = true
         //mark elements that rule trigged, it's need for cascade actions
-        this.form.find(this.selector).addClass(this.blip)
-        for(var c in this.match_actions)
-            this.match_actions[c].call(this)
+        Rule.form.find(this.selector).addClass(this.blip)        
+        for(var i=0; i<this.match_actions.length;i++)
+        {
+            var action = this.match_actions[i]            
+            action.call(this)
+        }
     }
     this.run_match_actions.first_run = true
 
@@ -184,8 +199,11 @@ function Rule(selector,form,raw_rule){
 
         this.trigged = false
         jQuery('.'+this.blip).removeClass(this.blip)
-        for(var c in this.unmatch_actions)
-            this.unmatch_actions[c].call(this)
+        for(var i=0; i<this.unmatch_actions.length;i++)
+        {
+            var action = this.unmatch_actions[i]            
+            action.call(this)
+        }        
     }
 
     Rule.all.push(this)
@@ -271,7 +289,7 @@ function generate_actions(key,form,rule)
 
                         var rule=this
                         jQuery.each(values,function(selector,value){
-                            jQuery.each(rule.form.find(selector),function(){
+                            jQuery.each(Rule.form.find(selector),function(){
                                 var tagName = jQuery(this).tagName
 
                                 if(tagName == 'select')
@@ -477,7 +495,7 @@ function arrayfy(obj)
 function arr_to_selector(arr)
 {
     res = ''
-    for(var i in arr)
+    for(var i=0; i<arr.length;i++)
         res += jQuery.trim(''+arr[i]) + ','
 
     return res
