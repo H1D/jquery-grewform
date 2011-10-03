@@ -11,16 +11,18 @@ jQuery.fn.grewform = function(options){
 
     //this will allow selectors like 'input[value=foo]' to work with all jQuery versions
     jQuery('input,textarea').live('keyup change',function(e) {
-        var ignore_codes= [33,34,36,35,45,38,40,37,39]//arrows and others
+        var ignore_codes= [33,34,36,35,45,38,40,37,39];//arrows and others
         if(e.keyCode && jQuery.inArray(e.keyCode,ignore_codes)<0)//ignore this keyUps to let this keys work as expected
-            jQuery(this).attr('value',this.value)
+        {
+            jQuery(this).attr('value',this.value);
+        }
     });
 
-    var form = this
+    var form = this;
 
     for (var rule_key in options)
     {
-        var rule = new Rule(rule_key,form,options[rule_key])
+        var rule = new Rule(rule_key,form,options[rule_key]);
     }
 
     //wait 300ms after keyup
@@ -71,9 +73,8 @@ function run_rules(){
                             clearInterval(wait);                            
                         }
                      },
-                     200
-                 )
-        }(rule))
+                     200);
+        }(rule));
     })
     
     //then run all math actions
@@ -96,9 +97,8 @@ function run_rules(){
                             clearInterval(wait);
                         }
                      },
-                     200
-                 )
-            }(rule))
+                     200);
+            }(rule));
     })
 }
 
@@ -122,24 +122,27 @@ function Rule(selector,form,raw_rule){
                                }
 
         //All rules (hello Django:])
-        Rule.all = []
-        Rule.form = form
+        Rule.all = [];
+        Rule.form = form;
     }
 
-    this.id = Rule.id++
+    this.id = Rule.id
+    Rule.id = Rule.id + 1
     this.blip = Rule.blip_ptr+this.id
     this.selectors = arrayfy((''+selector).split('AND')) //selectors of the rule
     jQuery.each(this.selectors,function(selectors){return function(k,v){selectors[k]=jQuery.trim(''+v)}}(this.selectors))//trim each selector
-    this.selector = arr_to_selector(this.selectors) //selector of the rule
-    this.trigged = false       //indicates is rule trigged or not
+    this.selector = arr_to_selector(this.selectors)//selector of the rule
+    this.trigged = false//indicates is rule trigged or not
     this.match_actions = []
     this.unmatch_actions = []
     this.raw = raw_rule
-    this.raw_selector = selector    
+    this.raw_selector = selector
 
     //extract actions    
     for(var action_key in raw_rule)
-        generate_actions(action_key,form,this)
+    {
+        generate_actions(action_key,form,this);
+    }
 
     //debug('created rule: '+this.selector +'['+ this.match_actions.length +'|'+this.unmatch_actions.length+']')
 
@@ -152,11 +155,16 @@ function Rule(selector,form,raw_rule){
                  //('option:visible') always return nothing
                  if(Rule.form.find(selector).filter('option:first').length > 0)
                  {
-                    if(Rule.form.find(selector).parent('select:visible:first').length == 0)
-                        return false
+                    if(Rule.form.find(selector).parent('select:visible:first').length === 0)
+                    {
+                        return false;
+                    }
                  }
-                 else if(Rule.form.find(selector).filter(':visible:first').length == 0)
-                     return false
+                 else if(Rule.form.find(selector).filter(':visible:first').length === 0)
+                 {
+                     return false;
+                 }
+                     
             }
             else
             {
@@ -168,13 +176,17 @@ function Rule(selector,form,raw_rule){
 
     this.unmatches = function(){
         if(!this.trigged)
-                return false
+        {
+            return false;
+        }
         
         for(var i=0; i<this.selectors.length;i++)
         {
             var selector = this.selectors[i]
-            if(Rule.form.find(selector+':first').length == 0)
-                return true
+            if(Rule.form.find(selector+':first').length === 0)
+            {
+                return true;
+            }
         }
         
         return false
@@ -227,8 +239,7 @@ function generate_actions(key,form,rule)
                             elems.slideDown();
                         }
                     }
-                }(form.find(rule.raw[key]))
-            )
+                }(form.find(rule.raw[key])))
 
             rule.unmatch_actions.push(
                 function(elems){
@@ -244,8 +255,7 @@ function generate_actions(key,form,rule)
                             elems.slideUp();
                         }
                     }
-                }(form.find(rule.raw[key]))
-            )
+                }(form.find(rule.raw[key])))
             break
         case 'hide':
             rule.match_actions.push(
@@ -261,8 +271,7 @@ function generate_actions(key,form,rule)
                             elems.slideUp();
                         }
                     }
-                }(form.find(rule.raw[key]))
-            )
+                }(form.find(rule.raw[key])))
 
             rule.unmatch_actions.push(
                 function(elems){
@@ -278,8 +287,7 @@ function generate_actions(key,form,rule)
                             elems.slideDown();
                         }
                     }
-                }(form.find(rule.raw[key]))
-            )
+                }(form.find(rule.raw[key])))
             break
         case 'set_value':
             rule.match_actions.push(
@@ -298,7 +306,9 @@ function generate_actions(key,form,rule)
                                      elems.find('option [value='+value+']').attr('selected','selected')
                                 }
                                 else
-                                    jQuery(this).val(value)
+                                {
+                                    jQuery(this).val(value);
+                                }
                             })
                         })
                     }
@@ -318,15 +328,14 @@ function generate_actions(key,form,rule)
                                  for(var v in options){
                                      //debug('add_options action')
                                      var selects = e.find(selector)
-                                     jQuery('<option></option>').html(options[v])
-                                                  .val(v)
-                                                  .appendTo(selects);
+                                     jQuery('<option></option>').html(options[v]).val(v).appendTo(selects);
                                  }
 
                                  //small trick with callable options:
                                  //we should determine what to remove from DOM right after we add it!
                                  if(this.run_match_actions.first_run){
-                                     for(var v in options)
+                                    for(var v in options)
+                                    {
                                         this.unmatch_actions.push(
                                             function(e,selector,v){
                                                  return function(){
@@ -334,14 +343,13 @@ function generate_actions(key,form,rule)
                                                      cascade_unmatch(e.children(selector).children('option[value='+v+']'))
                                                      e.find(selector).children().remove('option[value='+v+']')
                                                  }
-                                            }(form,selector,v)
-                                     )
-                                     //for adding unmatch actions only once!
-                                     this.run_match_actions.first_run = false
+                                            }(form,selector,v))
+                                    }   
+                                    //for adding unmatch actions only once!
+                                    this.run_match_actions.first_run = false
                                  }
                              }
-                        }(form,selector,options)
-                    )
+                        }(form,selector,options))
                 }
                 else{
                     for(var v in options){
@@ -350,12 +358,9 @@ function generate_actions(key,form,rule)
                                  return function(){
                                      //debug('add_options action')
                                      var selects = e.find(selector)
-                                     jQuery('<option></option>').html(h)
-                                                  .val(v)
-                                                  .appendTo(selects);
+                                     jQuery('<option></option>').html(h).val(v).appendTo(selects);
                                  }
-                            }(form,selector,v,options[v])
-                        )
+                            }(form,selector,v,options[v]))
                         rule.unmatch_actions.push(
                             function(e,selector,v){
                                  return function(){
@@ -363,8 +368,7 @@ function generate_actions(key,form,rule)
                                      cascade_unmatch(e.children(selector).children('option[value='+v+']'))
                                      e.find(selector).children().remove('option[value='+v+']')
                                  }
-                            }(form,selector,v)
-                        )
+                            }(form,selector,v))
                     }
                 }
             }
@@ -376,8 +380,7 @@ function generate_actions(key,form,rule)
                         //debug('disable action');
                         elems.attr('disabled','disabled');
                     }
-                }(form.find(rule.raw[key]))
-            )
+                }(form.find(rule.raw[key])))
 
             rule.unmatch_actions.push(
                 function(elems){
@@ -386,8 +389,7 @@ function generate_actions(key,form,rule)
                         cascade_unmatch(elems);
                         elems.removeAttr('disabled');
                     }
-                }(form.find(rule.raw[key]))
-            )
+                }(form.find(rule.raw[key])))
             break
         case 'enable':
             rule.match_actions.push(
@@ -396,8 +398,7 @@ function generate_actions(key,form,rule)
                         //debug('enable action');
                         elems.removeAttr('disabled');
                     }
-                }(form.find(rule.raw[key]))
-            )
+                }(form.find(rule.raw[key])))
 
             rule.unmatch_actions.push(
                 function(elems){
@@ -406,8 +407,7 @@ function generate_actions(key,form,rule)
                         cascade_unmatch(elems);
                         elems.attr('disabled','disabled');
                     }
-                }(form.find(rule.raw[key]))
-            )
+                }(form.find(rule.raw[key])))
             break
         case 'check':
             rule.match_actions.push(
@@ -416,8 +416,7 @@ function generate_actions(key,form,rule)
                         //debug('check action');
                         elems.attr('checked','checked');
                     }
-                }(form.find(rule.raw[key]))
-            )
+                }(form.find(rule.raw[key])))
 
             rule.unmatch_actions.push(
                 function(elems){
@@ -426,8 +425,7 @@ function generate_actions(key,form,rule)
                         cascade_unmatch(elems);
                         elems.removeAttr('checked');
                     }
-                }(form.find(rule.raw[key]))
-            )
+                }(form.find(rule.raw[key])))
             break
         case 'uncheck':
             rule.match_actions.push(
@@ -436,8 +434,7 @@ function generate_actions(key,form,rule)
                         //debug('uncheck action');
                         elems.removeAttr('checked');
                     }
-                }(form.find(rule.raw[key]))
-            )
+                }(form.find(rule.raw[key])))
 
             rule.unmatch_actions.push(
                 function(elems){
@@ -446,22 +443,20 @@ function generate_actions(key,form,rule)
                         cascade_unmatch(elems);
                         elems.attr('checked','checked');
                     }
-                }(form.find(rule.raw[key]))
-            )
+                }(form.find(rule.raw[key])))
             break
         case 'custom':
             rule.match_actions.push(
                 function(fn,context){
                     return function(){fn.call(context)}
-                }(rule.raw[key]['match'],jQuery(rule.selector))
-            )
+                }(rule.raw[key]['match'],jQuery(rule.selector)))
 
             rule.unmatch_actions.push(
                 function(fn,context){
                     return function(){fn.call(context)}
-                }(rule.raw[key]['unmatch'],jQuery(rule.selector))
-            )
+                }(rule.raw[key]['unmatch'],jQuery(rule.selector)))
             break
+        default:return;
     }
 }
 
@@ -470,7 +465,7 @@ function cascade_unmatch(elements)
     jQuery.each(elements,function(k,v){
         if(jQuery(this).attr('class') !== undefined)
         {
-            var classes = jQuery(this).attr('class').split(' ')
+            var classes = jQuery(this).attr('class').split(' ');
         }
         else
         {
@@ -478,7 +473,7 @@ function cascade_unmatch(elements)
         }
         
         jQuery.each(classes,function(k,v){
-            Rule.unmtach_by_blip(v)
+            Rule.unmtach_by_blip(v);
         })
         cascade_unmatch(elements.children())
     })
@@ -486,8 +481,10 @@ function cascade_unmatch(elements)
 
 function arrayfy(obj)
 {
-    if(obj.constructor != Array)
+    if(obj.constructor !== Array)
+    {
         return [obj];
+    }
 
     return obj;
 }
@@ -496,7 +493,9 @@ function arr_to_selector(arr)
 {
     res = ''
     for(var i=0; i<arr.length;i++)
-        res += jQuery.trim(''+arr[i]) + ','
+    {
+        res += jQuery.trim(''+arr[i]) + ',';
+    }
 
     return res
 }
