@@ -1,7 +1,7 @@
 Quickstart
 ----------
 	`$('form selector').grewform({
-		//Selectors are jCSS/jQuery compatible. You can select inputs by values setted runtime: 'input[value=foo]'
+		//Selectors are CSS/jQuery compatible. You can select inputs by values setted runtime: 'input[value=foo]'
 		'rule_selector' or 'rule_selector_1 AND rule_selector_2]:
 		{		
 			//all actions are optional and rolls back automatically
@@ -30,4 +30,5 @@ Quickstart
 
 	})`
 Check out [demos](http://h1d-demos.appspot.com/static/jquery-grewform/index.html)
+
 More help in [article(RUS)](http://habrahabr.ru/blogs/jquery/123940/)
