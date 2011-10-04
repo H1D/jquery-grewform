@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <script type="text/javascript"
+        src="http://yandex.st/jquery/1.6.1/jquery.min.js"></script>
+
+    <script type="text/javascript"
+      src="jquery.grewform.min.js"></script>
+
+    <script type="text/javascript"
+         src="http://softwaremaniacs.org/media/soft/highlight/highlight.pack.js"></script>
+
+    <script type="text/javascript">
+        $(function(){
+            $('#demo_code_displ').html($('#demo_code').html())
+            $('code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
+        })
+    </script>
+    <script type="text/javascript" id="demo_code">
+    $(function(){
+        $('#div_country,#div_city,#div_contact_type,#div_map,#div_office_phone,#div_skype,#div_address,#live_reminder').hide()
+        $('#submit_reg,#id_type,#id_numb').attr('disabled','disabled')
+
+        $('#reg_form').grewform({
+            '#id_form option[value=live]:selected':{
+                show:'#live_reminder',
+                enable:'#id_type',
+                add_options:
+                {
+                    '#id_type':
+                    {
+                        'office':'At the office',
+                        'remote':'At home'
+                    }
+                }
+            },
+
+            '#id_type option[value=office]:selected':{show:'#div_map',enable:'#id_numb'},
+            '#id_type option[value=remote]:selected':{
+                show:'#div_phone,#div_country,#div_city,#div_address',
+                disable:'#id_country,#id_city',
+                enable:'#id_numb',
+                set_value:{
+                    '#id_country':'USA',
+                    '#id_city':'New-York'
+                }
+            },
+
+            '#id_form option[value=remote]:selected':{
+                enable:'#id_type',
+                add_options:
+                {
+                    '#id_type':
+                    {
+                        'direct_call':'Direct call',
+                        'callback':'Callback'
+                    }
+                }
+            },
+            '#id_type option[value=direct_call]:selected':{show:'#div_office_phone',enable:'#id_numb'},
+            '#id_type option[value=callback]:selected':{show:'#div_contact_type',enable:'#id_numb'},
+
+            '#id_contact_type option[value=phone]:selected':{show:'#div_phone'},
+            '#id_contact_type option[value=skype]:selected':{show:'#div_skype'},
+
+            '#id_type:enabled AND #id_numb option[value=once]:selected':
+            {
+                custom:
+                {
+                    match:function(){$('#price').html('50$')},
+                    unmatch:function(){$('#price').html('')}
+                }
+            },
+
+            '#id_type:enabled AND #id_numb option[value=month]:selected':
+            {
+                custom:
+                {
+                    match:function(){$('#price').html('800$')},
+                    unmatch:function(){$('#price').html('')}
+                }
+            },
+
+            '#id_confirm:checked':{enable:'#submit_reg'}
+
+        });
+    });
+    </script>
+    <link rel="stylesheet" title="Default" href="http://softwaremaniacs.org/media/soft/highlight/styles/default.css">
+    <link rel="stylesheet" title="Default" href="css.css">
+</head>
+<body>
+
+    <h1 class="green">Order psychological consultation</h1>
+    <form method="POST" id="reg_form" action=".">
+        <div class="form-item">
+            <b id="live_reminder">Live consultation available only for NY city!</b>
+         </div>
+
+        <div id="div_form">
+            <div class="label">
+                <label for="id_form">Form</label>
+            </div>
+
+            <select name="form" id="id_form">
+                <option>-choose option-</option>
+                <option value="live">Live</option>
+                <option value="remote">Remote</option>
+            </select>
+         </div>
+
+
+        <div id="div_type">
+            <div class="label">
+                <label for="id_type">Type</label>
+            </div>
+
+            <select name="type" id="id_type">
+                <option>-choose option-</option>
+            </select>
+        </div>
+
+        <div id="div_map">
+            <h3>Our office:</h3>
+            <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=ru&amp;geocode=&amp;q=Statue%20of%20Liberty&amp;aq=&amp;sll=40.00658,-73.861084&amp;sspn=2.490843,4.938354&amp;gl=ru&amp;ie=UTF8&amp;hq=%D1%81%D1%82%D0%B0%D1%82%D1%83%D1%8F+%D1%81%D0%B2%D0%BE%D0%B1%D0%BE%D0%B4%D1%8B&amp;ll=40.689194,-74.044417&amp;spn=0.016921,0.032015&amp;output=embed"></iframe><br /><small><a href="http://maps.google.ru/maps?f=q&amp;source=embed&amp;hl=ru&amp;geocode=&amp;q=%D1%81%D1%82%D0%B0%D1%82%D1%83%D1%8F+%D1%81%D0%B2%D0%BE%D0%B1%D0%BE%D0%B4%D1%8B&amp;aq=&amp;sll=40.00658,-73.861084&amp;sspn=2.490843,4.938354&amp;gl=ru&amp;ie=UTF8&amp;hq=%D1%81%D1%82%D0%B0%D1%82%D1%83%D1%8F+%D1%81%D0%B2%D0%BE%D0%B1%D0%BE%D0%B4%D1%8B&amp;ll=40.689194,-74.044417&amp;spn=0.016921,0.032015" style="color:#0000FF;text-align:left">See map</a></small>
+        </div>
+
+        <div id="div_office_phone">
+            <h3>Our phone: 666-66-66</h3>
+        </div>
+
+        <div id="div_numb">
+            <div class="label">
+                <label for="id_numb">Number</label>
+            </div>
+            <select name="numb" id="id_numb">
+                <option>-choose option-</option>
+                <option value="once">Once</option>
+                <option value="month">Month package</option>
+            </select>
+        </div>
+
+        <div id="div_first_name">
+            <div class="label">
+                <label for="id_first_name">First name</label>
+            </div>
+            <input id="id_first_name" type="text" name="first_name"/>
+        </div>
+
+        <div id="div_last_name">
+            <div class="label">
+                <label for="id_last_name">Last name</label>
+            </div>
+            <input id="id_last_name" type="text" name="last_name"/>
+        </div>
+
+        <div id="div_country">
+            <div class="label">
+                <label for="id_country">Country</label>
+            </div>
+            <input id="id_country" type="text" name="last_name"/>
+        </div>
+
+        <div id="div_city">
+            <div class="label">
+                <label for="id_city">City</label>
+            </div>
+            <input id="id_city" type="text" name="city"/>
+        </div>
+
+        <div id="div_contact_type">
+            <div class="label">
+                <label for="id_contact_type">Contact by</label>
+            </div>
+            <select name="contact_type" id="id_contact_type">
+                <option value="phone" selected="selected">Phone</option>
+                <option value="skype">Skype</option>
+            </select>
+        </div>
+
+        <div id="div_phone">
+            <div class="label">
+                <label for="id_phone">Phone number</label>
+            </div>
+            <input id="id_phone" type="text" name="phone" />
+        </div>
+
+        <div id="div_skype">
+            <div class="label">
+                <label for="id_skype">Skype</label>
+            </div>
+            <input id="id_skype" type="text" name="skype" />
+
+        </div>
+
+        <div id="div_address">
+            <div class="label">
+                <label for="id_address">Address</label>
+            </div>
+            <input id="id_address" type="text" name="address"/>
+        </div>
+
+        <label for="price" class="label">Price:</label>
+        <b id="price">?</b><br/>
+
+        <input type="checkbox" id="id_confirm"/>
+        <label for="id_confirm" class="description">I'm agree with <a href="javascript:void(0)">bla-bla-bla</a></label> <br/>
+        
+        <input type="submit" value="Confirm order" name="submit" id="submit_reg" onclick="return false;"/>
+    </form>
+
+
+    <h3>All logic declared by following code:</h3>
+    <pre class="javascript">
+        <code id="demo_code_displ">
+        </code>
+    </pre>
+</body>
+</html>
+
+
