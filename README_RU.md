@@ -28,6 +28,6 @@ Quickstart
 			}
 
 	})`
-Загляните в [примеры](http://h1d-demos.appspot.com/static/jquery-grewform/index.html)
+Загляните в [примеры](http://h1d.github.com/jquery-grewform/)
 
 [Статья](http://habrahabr.ru/blogs/jquery/123940/) на хабре

@@ -29,6 +29,6 @@ Quickstart
 			}
 
 	})`
-Check out [demos](http://h1d-demos.appspot.com/static/jquery-grewform/index.html)
+Check out [demos](http://h1d.github.com/jquery-grewform/)
 
 More help in [article(RUS)](http://habrahabr.ru/blogs/jquery/123940/)
