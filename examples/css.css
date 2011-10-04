@@ -1,0 +1,18 @@
+html
+{
+    background: #9a9bb1;
+}
+
+body
+{
+    background: white;
+    margin: 1% 10% 10% 10%;
+    padding: 2em;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+form label
+{
+    font-weight: bold;
+}
