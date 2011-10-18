@@ -44,8 +44,10 @@
         });
     };
 
+    //reset all rules
     jQuery.fn.grewformReset = function() {
         Rule.id = undefined;
+        Rule.all = [];
     };
 
     function debug(str) {
