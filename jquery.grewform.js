@@ -44,6 +44,10 @@
         });
     };
 
+    jQuery.fn.grewformReset = function() {
+        Rule.id = undefined;
+    };
+
     function debug(str) {
         //console.log('jQuery.brForms >>> '+str)
     }
