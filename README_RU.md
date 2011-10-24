@@ -28,6 +28,10 @@ Quickstart
 			}
 
 	})`
+
+	$().grewform.reset(); //сбросить все правила ("выключить" плагин)
+	$().grewform.runRules(); //вручную запустить проверку правил
+
 Загляните в [примеры](http://h1d.github.com/jquery-grewform/)
 
 [Статья](http://habrahabr.ru/blogs/jquery/123940/) на хабре
