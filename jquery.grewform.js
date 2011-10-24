@@ -45,9 +45,13 @@
     };
 
     //reset all rules
-    jQuery.fn.grewformReset = function() {
+    jQuery.fn.grewform.reset = function() {
         Rule.id = undefined;
         Rule.all = [];
+    };
+
+    jQuery.fn.grewform.runRules = function() {
+        run_rules();
     };
 
     function debug(str) {
