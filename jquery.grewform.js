@@ -7,7 +7,14 @@
  * Licensed under the MIT license (license.txt)
  */
 (function() {
-    jQuery.fn.grewform = function(options) {
+    grewformOptions = {
+        "cascade": true
+    };
+
+    jQuery.fn.grewform = function(rules, options) {
+        if(options != undefined) {
+            grewformOptions = options;
+        }
 
         //this will allow selectors like 'input[value=foo]' to work with all jQuery versions
         jQuery('input,textarea').live('keyup change', function(e) {
@@ -20,8 +27,8 @@
 
         var form = this;
 
-        for (var rule_key in options) {
-            var rule = new Rule(rule_key, form, options[rule_key]);
+        for (var rule_key in rules) {
+            var rule = new Rule(rule_key, form, rules[rule_key]);
         }
 
         //wait 300ms after keyup
@@ -44,11 +51,10 @@
         });
     };
 
-    //reset all rules
     jQuery.fn.grewform.reset = function() {
         Rule.id = undefined;
         Rule.all = [];
-    }; 
+    };
 
     jQuery.fn.grewform.runRules = function() {
         run_rules();
@@ -82,7 +88,7 @@
             }(rule));
         })
 
-        //then run all math actions
+        //then run all match actions
         jQuery.each(Rule.all, function(i, rule) {
             (function(rule) {
                 var wait = setInterval(
@@ -104,7 +110,7 @@
         })
     }
 
-//constructor for rules
+    //constructor for rules
     function Rule(selector, form, raw_rule) {
         if (typeof Rule.id == 'undefined') {
             //unique id for rules
@@ -146,8 +152,6 @@
         for (var action_key in raw_rule) {
             generate_actions(action_key, form, this);
         }
-
-        //debug('created rule: '+this.selector +'['+ this.match_actions.length +'|'+this.unmatch_actions.length+']')
 
         this.matches = function() {
             for (var i = 0; i < this.selectors.length; i++) {
@@ -234,7 +238,7 @@
                     function(elems) {
                         return function() {
                             //debug('show action rollback');
-                            cascade_unmatch(elems);
+                            unmatch(elems);
                             if (elems.is('option')) {
                                 elems.hide();
                             }
@@ -262,7 +266,7 @@
                     function(elems) {
                         return function() {
                             //debug('hide action rollback');
-                            cascade_unmatch(elems);
+                            unmatch(elems);
                             if (elems.is('option')) {
                                 elems.show();
                             }
@@ -318,7 +322,7 @@
                                                 function(e, selector, v) {
                                                     return function() {
                                                         //debug('add_options action rollback');
-                                                        cascade_unmatch(e.children(selector).children('option[value=' + v + ']'))
+                                                        unmatch(e.children(selector).children('option[value=' + v + ']'))
                                                         e.find(selector).children().remove('option[value=' + v + ']')
                                                     }
                                                 }(form, selector, v))
@@ -343,7 +347,7 @@
                                 function(e, selector, v) {
                                     return function() {
                                         //debug('add_options action rollback');
-                                        cascade_unmatch(e.children(selector).children('option[value=' + v + ']'))
+                                        unmatch(e.children(selector).children('option[value=' + v + ']'))
                                         e.find(selector).children().remove('option[value=' + v + ']')
                                     }
                                 }(form, selector, v))
@@ -364,7 +368,7 @@
                     function(elems) {
                         return function() {
                             //debug('disable action rollback');
-                            cascade_unmatch(elems);
+                            unmatch(elems);
                             elems.removeAttr('disabled');
                         }
                     }(form.find(rule.raw[key])))
@@ -382,7 +386,7 @@
                     function(elems) {
                         return function() {
                             //debug('enable action rollback');
-                            cascade_unmatch(elems);
+                            unmatch(elems);
                             elems.attr('disabled', 'disabled');
                         }
                     }(form.find(rule.raw[key])))
@@ -400,7 +404,7 @@
                     function(elems) {
                         return function() {
                             //debug('check action rollback');
-                            cascade_unmatch(elems);
+                            unmatch(elems);
                             elems.removeAttr('checked');
                         }
                     }(form.find(rule.raw[key])))
@@ -418,7 +422,7 @@
                     function(elems) {
                         return function() {
                             //debug('uncheck action rollback');
-                            cascade_unmatch(elems);
+                            unmatch(elems);
                             elems.attr('checked', 'checked');
                         }
                     }(form.find(rule.raw[key])))
@@ -443,7 +447,14 @@
         }
     }
 
-    function cascade_unmatch(elements) {
+    function unmatch(elements) {
+        if(grewformOptions["cascade"])
+            return unmatch_with_cascade(elements);
+        else
+            return unmatch_without_cascade(elements);
+    }
+
+    function unmatch_with_cascade(elements) {
         jQuery.each(elements, function(k, v) {
             if (jQuery(this).attr('class') !== undefined) {
                 var classes = jQuery(this).attr('class').split(' ');
@@ -455,7 +466,22 @@
             jQuery.each(classes, function(k, v) {
                 Rule.unmtach_by_blip(v);
             })
-            cascade_unmatch(elements.children())
+            unmatch_with_cascade(elements.children())
+        })
+    }
+
+    function unmatch_without_cascade(elements) {
+        jQuery.each(elements, function(k, v) {
+            if (jQuery(this).attr('class') !== undefined) {
+                var classes = jQuery(this).attr('class').split(' ');
+            }
+            else {
+                return;
+            }
+
+            jQuery.each(classes, function(k, v) {
+                Rule.unmtach_by_blip(v);
+            })
         })
     }
 
