@@ -159,7 +159,7 @@
                             return false;
                         }
                     }
-                    else if (Rule.form.find(selector).filter(':visible:first').length === 0) {
+                    else if (Rule.form.find(selector).filter(':visible:first,input[type=hidden]:first').length === 0) {
                         return false;
                     }
 
