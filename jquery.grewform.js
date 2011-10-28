@@ -444,9 +444,10 @@
     }
 
     function cascade_unmatch(elements) {
-        jQuery.each(elements, function(k, v) {
-            if (jQuery(this).attr('class') !== undefined) {
-                var classes = jQuery(this).attr('class').split(' ');
+        jQuery.each(elements, function () {
+            var elem = jQuery(this);
+            if (elem.attr('class') !== undefined) {
+                var classes = elem.attr('class').split(' ');
             }
             else {
                 return;
@@ -455,7 +456,7 @@
             jQuery.each(classes, function(k, v) {
                 Rule.unmtach_by_blip(v);
             })
-            cascade_unmatch(elements.children())
+            cascade_unmatch(elem.children())
         })
     }
 
@@ -463,7 +464,6 @@
         if (obj.constructor !== Array) {
             return [obj];
         }
-
         return obj;
     }
 
