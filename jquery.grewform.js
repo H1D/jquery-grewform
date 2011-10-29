@@ -14,7 +14,9 @@
             var ignore_codes = [33,34,36,35,45,38,40,37,39];//arrows and others
             if (e.keyCode && jQuery.inArray(e.keyCode, ignore_codes) < 0)//ignore this keyUps to let this keys work as expected
             {
+                var cp = getCP(this);
                 jQuery(this).attr('value', this.value);
+                setCP(this,cp);
             }
         });
 
@@ -460,6 +462,9 @@
         })
     }
 
+
+// ----------------- U T I L S  ----------------- 
+
     function arrayfy(obj) {
         if (obj.constructor !== Array) {
             return [obj];
@@ -474,5 +479,34 @@
         }
 
         return res
+    }
+
+    function getCP (ctrl) {
+        var cp = 0;  
+         
+        // IE Support
+        if (document.selection) {
+        ctrl.focus ();
+            var sel = document.selection.createRange ();
+            sel.moveStart ('character', -ctrl.value.length);
+            cp = Sel.text.length;
+        }
+        // Firefox support
+        else if (ctrl.selectionStart || ctrl.selectionStart == '0') {
+            cp = ctrl.selectionStart;
+        }
+        return (CaretPos);
+    }
+    function setCP(ctrl, pos){
+        if(ctrl.setSelectionRange) {
+            ctrl.focus();
+            ctrl.setSelectionRange(pos,pos);
+        } else if (ctrl.createTextRange) {
+            var range = ctrl.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', pos);
+            range.moveStart('character', pos);
+            range.select();
+        }
     }
 })();
