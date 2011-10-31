@@ -7,28 +7,23 @@
  * Licensed under the MIT license (license.txt)
  */
 (function() {
-    grewformOptions = {
-        "cascade": true
-    };
-
-    jQuery.fn.grewform = function(rules, options) {
-        if(options != undefined) {
-            grewformOptions = options;
-        }
+    jQuery.fn.grewform = function(options) {
 
         //this will allow selectors like 'input[value=foo]' to work with all jQuery versions
         jQuery('input,textarea').live('keyup change', function(e) {
             var ignore_codes = [33,34,36,35,45,38,40,37,39];//arrows and others
             if (e.keyCode && jQuery.inArray(e.keyCode, ignore_codes) < 0)//ignore this keyUps to let this keys work as expected
             {
+                var cp = getCP(this);
                 jQuery(this).attr('value', this.value);
+                setCP(this,cp);
             }
         });
 
         var form = this;
 
-        for (var rule_key in rules) {
-            var rule = new Rule(rule_key, form, rules[rule_key]);
+        for (var rule_key in options) {
+            var rule = new Rule(rule_key, form, options[rule_key]);
         }
 
         //wait 300ms after keyup
@@ -51,10 +46,11 @@
         });
     };
 
+    //reset all rules
     jQuery.fn.grewform.reset = function() {
         Rule.id = undefined;
         Rule.all = [];
-    };
+    }; 
 
     jQuery.fn.grewform.runRules = function() {
         run_rules();
@@ -88,7 +84,7 @@
             }(rule));
         })
 
-        //then run all match actions
+        //then run all math actions
         jQuery.each(Rule.all, function(i, rule) {
             (function(rule) {
                 var wait = setInterval(
@@ -110,7 +106,7 @@
         })
     }
 
-    //constructor for rules
+//constructor for rules
     function Rule(selector, form, raw_rule) {
         if (typeof Rule.id == 'undefined') {
             //unique id for rules
@@ -153,6 +149,8 @@
             generate_actions(action_key, form, this);
         }
 
+        //debug('created rule: '+this.selector +'['+ this.match_actions.length +'|'+this.unmatch_actions.length+']')
+
         this.matches = function() {
             for (var i = 0; i < this.selectors.length; i++) {
                 var selector = this.selectors[i]
@@ -163,7 +161,7 @@
                             return false;
                         }
                     }
-                    else if (Rule.form.find(selector).filter(':visible:first').length === 0) {
+                    else if (Rule.form.find(selector).filter(':visible:first,input[type=hidden]:first').length === 0) {
                         return false;
                     }
 
@@ -238,7 +236,7 @@
                     function(elems) {
                         return function() {
                             //debug('show action rollback');
-                            unmatch(elems);
+                            cascade_unmatch(elems);
                             if (elems.is('option')) {
                                 elems.hide();
                             }
@@ -266,7 +264,7 @@
                     function(elems) {
                         return function() {
                             //debug('hide action rollback');
-                            unmatch(elems);
+                            cascade_unmatch(elems);
                             if (elems.is('option')) {
                                 elems.show();
                             }
@@ -322,7 +320,7 @@
                                                 function(e, selector, v) {
                                                     return function() {
                                                         //debug('add_options action rollback');
-                                                        unmatch(e.children(selector).children('option[value=' + v + ']'))
+                                                        cascade_unmatch(e.children(selector).children('option[value=' + v + ']'))
                                                         e.find(selector).children().remove('option[value=' + v + ']')
                                                     }
                                                 }(form, selector, v))
@@ -347,7 +345,7 @@
                                 function(e, selector, v) {
                                     return function() {
                                         //debug('add_options action rollback');
-                                        unmatch(e.children(selector).children('option[value=' + v + ']'))
+                                        cascade_unmatch(e.children(selector).children('option[value=' + v + ']'))
                                         e.find(selector).children().remove('option[value=' + v + ']')
                                     }
                                 }(form, selector, v))
@@ -368,7 +366,7 @@
                     function(elems) {
                         return function() {
                             //debug('disable action rollback');
-                            unmatch(elems);
+                            cascade_unmatch(elems);
                             elems.removeAttr('disabled');
                         }
                     }(form.find(rule.raw[key])))
@@ -386,7 +384,7 @@
                     function(elems) {
                         return function() {
                             //debug('enable action rollback');
-                            unmatch(elems);
+                            cascade_unmatch(elems);
                             elems.attr('disabled', 'disabled');
                         }
                     }(form.find(rule.raw[key])))
@@ -404,7 +402,7 @@
                     function(elems) {
                         return function() {
                             //debug('check action rollback');
-                            unmatch(elems);
+                            cascade_unmatch(elems);
                             elems.removeAttr('checked');
                         }
                     }(form.find(rule.raw[key])))
@@ -422,7 +420,7 @@
                     function(elems) {
                         return function() {
                             //debug('uncheck action rollback');
-                            unmatch(elems);
+                            cascade_unmatch(elems);
                             elems.attr('checked', 'checked');
                         }
                     }(form.find(rule.raw[key])))
@@ -447,17 +445,11 @@
         }
     }
 
-    function unmatch(elements) {
-        if(grewformOptions["cascade"])
-            return unmatch_with_cascade(elements);
-        else
-            return unmatch_without_cascade(elements);
-    }
-
-    function unmatch_with_cascade(elements) {
-        jQuery.each(elements, function(k, v) {
-            if (jQuery(this).attr('class') !== undefined) {
-                var classes = jQuery(this).attr('class').split(' ');
+    function cascade_unmatch(elements) {
+        jQuery.each(elements, function () {
+            var elem = jQuery(this);
+            if (elem.attr('class') !== undefined) {
+                var classes = elem.attr('class').split(' ');
             }
             else {
                 return;
@@ -466,30 +458,17 @@
             jQuery.each(classes, function(k, v) {
                 Rule.unmtach_by_blip(v);
             })
-            unmatch_with_cascade(elements.children())
+            cascade_unmatch(elem.children())
         })
     }
 
-    function unmatch_without_cascade(elements) {
-        jQuery.each(elements, function(k, v) {
-            if (jQuery(this).attr('class') !== undefined) {
-                var classes = jQuery(this).attr('class').split(' ');
-            }
-            else {
-                return;
-            }
 
-            jQuery.each(classes, function(k, v) {
-                Rule.unmtach_by_blip(v);
-            })
-        })
-    }
+// ----------------- U T I L S  ----------------- 
 
     function arrayfy(obj) {
         if (obj.constructor !== Array) {
             return [obj];
         }
-
         return obj;
     }
 
@@ -500,5 +479,34 @@
         }
 
         return res
+    }
+
+    function getCP (ctrl) {
+        var cp = 0;  
+         
+        // IE Support
+        if (document.selection) {
+        ctrl.focus ();
+            var sel = document.selection.createRange ();
+            sel.moveStart ('character', -ctrl.value.length);
+            cp = Sel.text.length;
+        }
+        // Firefox support
+        else if (ctrl.selectionStart || ctrl.selectionStart == '0') {
+            cp = ctrl.selectionStart;
+        }
+        return (CaretPos);
+    }
+    function setCP(ctrl, pos){
+        if(ctrl.setSelectionRange) {
+            ctrl.focus();
+            ctrl.setSelectionRange(pos,pos);
+        } else if (ctrl.createTextRange) {
+            var range = ctrl.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', pos);
+            range.moveStart('character', pos);
+            range.select();
+        }
     }
 })();
