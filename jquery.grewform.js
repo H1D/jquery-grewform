@@ -1,5 +1,5 @@
 /*!
- * jQuery GrewForm Plugin v0.0.3
+ * jQuery GrewForm Plugin v0.4.0.1
  *
  * Copyright 2011, Artem Suschev
  * Grandcapital Ltd.
@@ -7,7 +7,7 @@
  * Licensed under the MIT license (license.txt)
  */
 (function() {
-    jQuery.fn.grewform = function(options) {
+    jQuery.fn.grewform = function(rules, options) {
 
         //this will allow selectors like 'input[value=foo]' to work with all jQuery versions
         jQuery('input,textarea').live('keyup change', function(e) {
@@ -22,8 +22,8 @@
 
         var form = this;
 
-        for (var rule_key in options) {
-            var rule = new Rule(rule_key, form, options[rule_key]);
+        for (var rule_key in rules) {
+            var rule = new Rule(rule_key, form, rules[rule_key]);
         }
 
         //wait 300ms after keyup
@@ -40,10 +40,29 @@
             run_rules()
         });
 
+
+        //init default options
+        Options();
+
+        //set custom options if there are
+        if (options && options.effects) {
+            for(var opt in options) {
+                Options[opt] = options[opt];    
+            }
+        }
+
         //run after every change
         return form.find('*').change(function() {
             run_rules()
         });
+    };
+
+    //default options
+    function Options() {
+        Options.effects = {
+            'show': 'slideDown',
+            'hide': 'slideUp'
+        }
     };
 
     //reset all rules
@@ -227,7 +246,7 @@
                                 elems.show();
                             }
                             else {
-                                elems.slideDown();
+                                elems[Options.effects.show]();
                             }
                         }
                     }(form.find(rule.raw[key])))
@@ -241,7 +260,7 @@
                                 elems.hide();
                             }
                             else {
-                                elems.slideUp();
+                                elems[Options.effects.hide]();
                             }
                         }
                     }(form.find(rule.raw[key])))
@@ -255,7 +274,7 @@
                                 elems.hide();
                             }
                             else {
-                                elems.slideUp();
+                                elems[Options.effects.hide]();
                             }
                         }
                     }(form.find(rule.raw[key])))
@@ -269,7 +288,7 @@
                                 elems.show();
                             }
                             else {
-                                elems.slideDown();
+                                elems[Options.effects.show]();
                             }
                         }
                     }(form.find(rule.raw[key])))
