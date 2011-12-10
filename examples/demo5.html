@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <script type="text/javascript"
-        src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        src="http://yandex.st/jquery/1.4.2/jquery.min.js"></script>
 
     <script type="text/javascript"
       src="../jquery.grewform.js"></script>
@@ -20,9 +20,11 @@
     </script>
     <script type="text/javascript" id="demo_code">
        $(function(){
+            $('#ch4,#ch5,#ch6,#ch7,#ch8,#ch9,#chq,#chw,#che,#chr').hide();
              $('form').grewform({
                  '#ch1:checked AND #ch2:checked':{
-                     enable:'#ch3'
+                     enable:'#ch3',
+                     show:'#ch4,#ch5,#ch6,#ch7,#ch8,#ch9,#chq,#chw,#che,#chr'
                  }
              })
         })
@@ -34,7 +36,17 @@
     <form>
         <label><input id="ch1" type="checkbox">I will not skateboard in the halls.</label><br/>
         <label><input id="ch2" type="checkbox">I will not instigate revolution.</label><br/>
-        <label><input id="ch3" type="checkbox" disabled="disabled"> did not see Elvis.</label><br/>
+        <label><input id="ch3" type="checkbox" disabled="disabled"> did not see Elvis.</label><br/>        
+        <div id="ch4">span</div>
+        <div id="ch5">span</div>
+        <div id="ch6">span</div>
+        <div id="ch7">span</div>
+        <div id="ch8">span</div>
+        <div id="ch9">span</div>
+        <div id="chq">span</div>
+        <div id="chw">span</div>
+        <div id="che">span</div>
+        <div id="chr">span</div>
     </form>
 
     <h3>All logic declared by following code:</h3>
