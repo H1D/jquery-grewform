@@ -514,7 +514,7 @@
         else if (ctrl.selectionStart || ctrl.selectionStart == '0') {
             cp = ctrl.selectionStart;
         }
-        return (CaretPos);
+        return (cp);
     }
     function setCP(ctrl, pos){
         if(ctrl.setSelectionRange) {
