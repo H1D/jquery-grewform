@@ -11,10 +11,10 @@
 
         //this will allow selectors like 'input[value=foo]' to work with all jQuery versions
         jQuery('input,textarea').live('keyup change', function(e) {
-            var ignore_codes = [33,34,36,35,45,38,40,37,39];//arrows and others
+            var ignore_codes = [16,9,33,34,36,35,45,38,40,37,39];//arrows and others
             if (e.keyCode && jQuery.inArray(e.keyCode, ignore_codes) < 0)//ignore this keyUps to let this keys work as expected
             {
-                var cp = getCP(this);
+                    var cp = getCP(this);
                 jQuery(this).attr('value', this.value);
                 setCP(this,cp);
             }
@@ -29,7 +29,7 @@
         //wait 300ms after keyup
         form.find('*').keyup(function() {
             var wait = setInterval(function() {
-                    clearInterval(wait)
+                    clearInterval(wait);
                     run_rules()
                 },
                 300)
