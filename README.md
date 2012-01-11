@@ -10,10 +10,13 @@ Quickstart
 			disable:'elements selecotr'	//adding disabled="disabled" to attributes (remove on rollback)
 			enable:'elements selecotr'	//removing disabled from attributes (adding on rollback)
 			check:'elements selecotr'	//adding disabled="checked" to attributes (remove on rollback)
-			uncheck:'elements selecotr'	//removing checked from attributes (adding on rollback)
-			set_value:<elements_selector>,	//setting value (<input> and <select> are supported)
-			add_options: 			//for adding options to selects
-			{
+			uncheck:'elements selecotr'	//removing "checked" from attributes (adding on rollback)
+			set_value: { //setting value (<input> and <select> are supported, setting "selected" for <option> matched by value)
+                <select_1>:<value_1>,
+                <select_2>:<value_2>,
+                ...
+            },
+			add_options: { 			//for adding options to selects
 				'<select> selector':{
 		                      <value_1>:<display_value_1>,
 		                      <value_2>:<display_value_2>,
@@ -22,8 +25,7 @@ Quickstart
 				or
 				'<select> selector': function	//should return obj formatted like described above
 			},
-			custom:		//for custom actions
-			{
+			custom: {		//for custom actions
 				match:function,		//will be called when rule selector matches at least one element
 				unmatch:function,	//will be called on rollback
 			}

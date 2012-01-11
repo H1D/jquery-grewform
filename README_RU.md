@@ -10,7 +10,11 @@ Quickstart
 			enable:'elements_selector' //убирает атрибут элемента disabled  (добавляет disabled="disabled" при откате)
 			check:'elements_selector'  //добавляет checked="checked" к атрибутам элемента (убирает при откате)
 			uncheck:'elements_selector' //убирает атрибут элемента checked  (добавляет checked="checked" при откате)
-			set_value:'elements_selector',  //задаёт value для <input>, для <select> добавляет selected="selected" у соответствующего <option>
+			set_value: {  //задаёт value для <input>, для <select> добавляет selected="selected" у соответствующего <option>
+			  <select_1>:<value_1>,
+                <select_2>:<value_2>,
+                ...
+            },
 			add_options:            //добавляет <option> в <select>
 			{
 			    '<select> selector':{
