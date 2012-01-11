@@ -305,14 +305,33 @@
                                     var tagName = jQuery(this).tagName
 
                                     if (tagName == 'select') {
+
+                                        //rollback
+                                        if (this.run_match_actions.first_run) {
+                                            this.unmatch_actions.push(function (elems,prev_elems) {
+                                                cascade_unmatch(elems)
+                                                prev_elems.attr('selected', 'selected')
+                                            }(elems.find('option [value=' + value + ']'),elems.find('option:selected')))
+                                        }
+
                                         elems.find('option').removeAttr('selected')
                                         elems.find('option [value=' + value + ']').attr('selected', 'selected')
                                     }
                                     else {
+                                        //rollback
+                                        if (this.run_match_actions.first_run) {
+                                            this.unmatch_actions.push(function (elem,prev_value) {
+                                                cascade_unmatch(elem)
+                                                elem.val(prev_value)
+                                            }(jQuery(this),jQuery(this).val()))
+                                        }
+
                                         jQuery(this).val(value);
                                     }
                                 })
                             })
+
+                            this.run_match_actions.first_run = false
                         }
                     }(rule.raw[key]))
                 break
@@ -344,7 +363,7 @@
                                                     }
                                                 }(form, selector, v))
                                         }
-                                        //for adding unmatch actions only once!
+                                        //for adding unmatch actions once!
                                         this.run_match_actions.first_run = false
                                     }
                                 }

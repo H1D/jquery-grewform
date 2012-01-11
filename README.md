@@ -11,7 +11,7 @@ Quickstart
 			enable:'elements selecotr'	//removing disabled from attributes (adding on rollback)
 			check:'elements selecotr'	//adding disabled="checked" to attributes (remove on rollback)
 			uncheck:'elements selecotr'	//removing "checked" from attributes (adding on rollback)
-			set_value: { //setting value (<input> and <select> are supported, setting "selected" for <option> matched by value)
+			set_value: { //setting value (<input> and <select> are supported, setting "selected" for <option> matched by value; restoring values on rollback)
                 <select_1>:<value_1>,
                 <select_2>:<value_2>,
                 ...
