@@ -488,14 +488,11 @@
             var elem = jQuery(this);
             if (elem.attr('class') !== undefined) {
                 var classes = elem.attr('class').split(' ');
-            }
-            else {
-                return;
+                jQuery.each(classes, function(k, v) {
+                    Rule.unmtach_by_blip(v);
+                })
             }
 
-            jQuery.each(classes, function(k, v) {
-                Rule.unmtach_by_blip(v);
-            })
             cascade_unmatch(elem.children())
         })
     }
