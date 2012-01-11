@@ -240,7 +240,7 @@
             case 'show':
                 rule.match_actions.push(
                     function(elems) {
-                        return function() {
+                        return function () {
                             //debug('show action');
                             if (elems.is('option')) {
                                 elems.show();
@@ -253,7 +253,7 @@
 
                 rule.unmatch_actions.push(
                     function(elems) {
-                        return function() {
+                        return function () {
                             //debug('show action rollback');
                             cascade_unmatch(elems);
                             if (elems.is('option')) {
@@ -268,7 +268,7 @@
             case 'hide':
                 rule.match_actions.push(
                     function(elems) {
-                        return function() {
+                        return function () {
                             //debug('hide action');
                             if (elems.is('option')) {
                                 elems.hide();
@@ -281,7 +281,7 @@
 
                 rule.unmatch_actions.push(
                     function(elems) {
-                        return function() {
+                        return function () {
                             //debug('hide action rollback');
                             cascade_unmatch(elems);
                             if (elems.is('option')) {
@@ -296,7 +296,7 @@
             case 'set_value':
                 rule.match_actions.push(
                     function(values) {
-                        return function() {
+                        return function () {
                             //debug('value action');
 
                             var rule = this
@@ -307,10 +307,12 @@
                                     if (tagName == 'select') {
 
                                         //rollback
-                                        if (this.run_match_actions.first_run) {
-                                            this.unmatch_actions.push(function (elems,prev_elems) {
-                                                cascade_unmatch(elems)
-                                                prev_elems.attr('selected', 'selected')
+                                        if (rule.run_match_actions.first_run) {
+                                            rule.unmatch_actions.push(function (elems,prev_elems) {
+                                                return function () {
+                                                    cascade_unmatch(elems)
+                                                    prev_elems.attr('selected', 'selected')
+                                                }
                                             }(elems.find('option [value=' + value + ']'),elems.find('option:selected')))
                                         }
 
@@ -319,19 +321,21 @@
                                     }
                                     else {
                                         //rollback
-                                        if (this.run_match_actions.first_run) {
-                                            this.unmatch_actions.push(function (elem,prev_value) {
-                                                cascade_unmatch(elem)
-                                                elem.val(prev_value)
-                                            }(jQuery(this),jQuery(this).val()))
+                                        if (rule.run_match_actions.first_run) {
+                                            rule.unmatch_actions.push(function (elem,prev_value) {
+                                                return function () {
+                                                    cascade_unmatch(elem)
+                                                    elem.val(prev_value)
+                                                }
+                                            }(jQuery(selector),jQuery(selector).val()))
                                         }
 
-                                        jQuery(this).val(value);
+                                        jQuery(selector).val(value);
                                     }
                                 })
                             })
 
-                            this.run_match_actions.first_run = false
+                            rule.run_match_actions.first_run = false
                         }
                     }(rule.raw[key]))
                 break
@@ -342,7 +346,7 @@
                     if (typeof options == 'function') {
                         rule.match_actions.push(
                             function(e, selector, fn) {
-                                return function() {
+                                return function () {
                                     var options = fn()
                                     for (var v in options) {
                                         //debug('add_options action')
@@ -356,7 +360,7 @@
                                         for (var v in options) {
                                             this.unmatch_actions.push(
                                                 function(e, selector, v) {
-                                                    return function() {
+                                                    return function () {
                                                         //debug('add_options action rollback');
                                                         cascade_unmatch(e.children(selector).children('option[value=' + v + ']'))
                                                         e.find(selector).children().remove('option[value=' + v + ']')
@@ -373,7 +377,7 @@
                         for (var v in options) {
                             rule.match_actions.push(
                                 function(e, selector, v, h) {
-                                    return function() {
+                                    return function () {
                                         //debug('add_options action')
                                         var selects = e.find(selector)
                                         jQuery('<option></option>').html(h).val(v).appendTo(selects);
@@ -381,7 +385,7 @@
                                 }(form, selector, v, options[v]))
                             rule.unmatch_actions.push(
                                 function(e, selector, v) {
-                                    return function() {
+                                    return function () {
                                         //debug('add_options action rollback');
                                         cascade_unmatch(e.children(selector).children('option[value=' + v + ']'))
                                         e.find(selector).children().remove('option[value=' + v + ']')
@@ -394,7 +398,7 @@
             case 'disable':
                 rule.match_actions.push(
                     function(elems) {
-                        return function() {
+                        return function () {
                             //debug('disable action');
                             elems.attr('disabled', 'disabled');
                         }
@@ -402,7 +406,7 @@
 
                 rule.unmatch_actions.push(
                     function(elems) {
-                        return function() {
+                        return function () {
                             //debug('disable action rollback');
                             cascade_unmatch(elems);
                             elems.removeAttr('disabled');
@@ -412,7 +416,7 @@
             case 'enable':
                 rule.match_actions.push(
                     function(elems) {
-                        return function() {
+                        return function () {
                             //debug('enable action');
                             elems.removeAttr('disabled');
                         }
@@ -420,7 +424,7 @@
 
                 rule.unmatch_actions.push(
                     function(elems) {
-                        return function() {
+                        return function () {
                             //debug('enable action rollback');
                             cascade_unmatch(elems);
                             elems.attr('disabled', 'disabled');
@@ -430,7 +434,7 @@
             case 'check':
                 rule.match_actions.push(
                     function(elems) {
-                        return function() {
+                        return function () {
                             //debug('check action');
                             elems.attr('checked', 'checked');
                         }
@@ -438,7 +442,7 @@
 
                 rule.unmatch_actions.push(
                     function(elems) {
-                        return function() {
+                        return function () {
                             //debug('check action rollback');
                             cascade_unmatch(elems);
                             elems.removeAttr('checked');
@@ -448,7 +452,7 @@
             case 'uncheck':
                 rule.match_actions.push(
                     function(elems) {
-                        return function() {
+                        return function () {
                             //debug('uncheck action');
                             elems.removeAttr('checked');
                         }
@@ -456,24 +460,50 @@
 
                 rule.unmatch_actions.push(
                     function(elems) {
-                        return function() {
+                        return function () {
                             //debug('uncheck action rollback');
                             cascade_unmatch(elems);
                             elems.attr('checked', 'checked');
                         }
                     }(form.find(rule.raw[key])))
                 break
+            case 'set_html':
+                rule.match_actions.push(
+                    function(values) {
+                        return function () {
+                            //debug('value action');
+                            var rule = this
+                            jQuery.each(values, function(selector, value) {
+                                jQuery.each(Rule.form.find(selector), function() {
+                                    //rollback
+                                    if (rule.run_match_actions.first_run) {
+                                        rule.unmatch_actions.push(function (elem,prev_html) {
+                                            return function () {
+                                                cascade_unmatch(elem)
+                                                elem.html(prev_html)
+                                            }
+                                        }(jQuery(selector),jQuery(selector).html()))
+                                    }
+
+                                    jQuery(selector).html(value);
+                                })
+                            })
+
+                            rule.run_match_actions.first_run = false
+                        }
+                    }(rule.raw[key]))
+                break
             case 'custom':
                 rule.match_actions.push(
                     function(fn, context) {
-                        return function() {
+                        return function () {
                             fn.call(context)
                         }
                     }(rule.raw[key]['match'], jQuery(rule.selector)))
 
                 rule.unmatch_actions.push(
                     function(fn, context) {
-                        return function() {
+                        return function () {
                             fn.call(context)
                         }
                     }(rule.raw[key]['unmatch'], jQuery(rule.selector)))

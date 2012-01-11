@@ -67,19 +67,17 @@
 
             '#id_type:enabled AND #id_numb option[value=once]:selected':
             {
-                custom:
+                'set_html':
                 {
-                    match:function(){$('#price').html('50$')},
-                    unmatch:function(){$('#price').html('')}
+                    '#price':'50$'
                 }
             },
 
             '#id_type:enabled AND #id_numb option[value=month]:selected':
             {
-                custom:
+                'set_html':
                 {
-                    match:function(){$('#price').html('800$')},
-                    unmatch:function(){$('#price').html('')}
+                    '#price':'800$'
                 }
             },
 
