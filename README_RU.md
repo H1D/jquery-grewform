@@ -15,6 +15,11 @@ Quickstart
                 <select_2>:<value_2>,
                 ...
             },
+            set_html: { //задаёт html (возвращает изначальный при откате)
+                            <select_1>:<html_1>,
+                            <select_2>:<html_2>,
+                            ...
+                        },
 			add_options:            //добавляет <option> в <select>
 			{
 			    '<select> selector':{

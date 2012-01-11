@@ -16,6 +16,11 @@ Quickstart
                 <select_2>:<value_2>,
                 ...
             },
+            set_html: { //setting html (restoring html on rollback)
+                <select_1>:<html_1>,
+                <select_2>:<html_2>,
+                ...
+            },
 			add_options: { 			//for adding options to selects
 				'<select> selector':{
 		                      <value_1>:<display_value_1>,
