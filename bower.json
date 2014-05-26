@@ -1,0 +1,28 @@
+{
+    "name": "GrewForm",
+    "version": "0.4.1",
+    "homepage": "https://github.com/H1D/jquery-grewform",
+    "authors": [
+        "H1D <Suschev.Artem@gmail.com>"
+    ],
+    "description": "jQuery GrewForm Plugin v0.4.1",
+    "main": [
+        "jquery.grewform.min.js",
+        "jquery.grewform.js",
+        "jquery.grewform.min.map"
+    ],
+    "moduleType": [
+        "globals"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "node_modules",
+        "bower_components",
+        ".gitignore",
+        "Gruntfile.js",
+        "package.json"
+    ],
+    "dependencies": {
+        "jquery": ">=1.5"
+    }
+}
