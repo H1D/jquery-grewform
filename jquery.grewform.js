@@ -1,8 +1,9 @@
-/*!
- * jQuery GrewForm Plugin v0.4.0.1
+/*
+ * jQuery GrewForm Plugin v0.4.1
  *
- * Copyright 2011, Artem Suschev
+ * Copyright 2011-2014, Artem Suschev
  * Grandcapital Ltd.
+ * Contributions: Andre_487 (https://github.com/Andre-487/)
  *
  * Licensed under the MIT license (license.txt)
  */

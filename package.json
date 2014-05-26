@@ -1,0 +1,12 @@
+{
+    "name": "GrewForm",
+    "version": "0.4.1",
+    "description": "jQuery GrewForm Plugin v0.4.1",
+    "homepage": "https://github.com/H1D/jquery-grewform",
+    "repository": "https://github.com/H1D/jquery-grewform.git",
+    "license": "MIT",
+    "devDependencies": {
+        "grunt": "latest",
+        "grunt-contrib-uglify": "latest"
+    }
+}
