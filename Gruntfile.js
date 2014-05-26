@@ -27,4 +27,11 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.registerTask('copy_compiled', function () {
+        var baseName = 'jquery.grewform.min.js',
+            srcFile = __dirname + '/' + baseName,
+            testFile = __dirname + '/tests/' + baseName;
+        grunt.file.copy(srcFile, testFile);
+    });
+    grunt.registerTask('minify', ['uglify', 'copy_compiled'])
 };
