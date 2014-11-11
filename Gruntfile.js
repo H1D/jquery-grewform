@@ -34,4 +34,5 @@ module.exports = function (grunt) {
         grunt.file.copy(srcFile, testFile);
     });
     grunt.registerTask('minify', ['uglify', 'copy_compiled'])
+    grunt.registerTask('default', ['minify'])
 };
