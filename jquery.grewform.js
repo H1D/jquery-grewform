@@ -11,13 +11,13 @@
     jQuery.fn.grewform = function(rules, options) {
 
         //this will allow selectors like 'input[value=foo]' to work with all jQuery versions
-        jQuery('input,textarea').on('keyup change', function(e) {
+        jQuery(document.body).on('keyup change', 'input,textarea', function(e) {
             var ignore_codes = [16,9,33,34,36,35,45,38,40,37,39];//arrows and others
             if (e.keyCode && jQuery.inArray(e.keyCode, ignore_codes) < 0)//ignore this keyUps to let this keys work as expected
             {
-                var cp = getCP(this);
-                jQuery(this).attr('value', this.value);
-                setCP(this,cp);
+                var cp = getCP(e.target);
+                jQuery(e.target).attr('value', e.target.value);
+                setCP(e.target,cp);
             }
         });
 
@@ -551,7 +551,7 @@
 
         // IE Support
         if (document.selection) {
-            ctrl.focus ();
+            ctrl.focus();
             var sel = document.selection.createRange ();
             sel.moveStart ('character', -ctrl.value.length);
             cp = Sel.text.length;
