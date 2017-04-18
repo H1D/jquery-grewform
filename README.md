@@ -40,7 +40,7 @@ Quickstart
 	$().grewform.reset(); // reset all rules (i.e. turn off)
 	$().grewform.runRules(); //manualy run rules
 
-##Requirements
+## Requirements
  jQuery 1.7 or more
 
 Check out [demos](http://h1d.github.com/jquery-grewform/)

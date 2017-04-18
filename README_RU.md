@@ -41,7 +41,7 @@ Quickstart
 	$().grewform.reset(); //сбросить все правила ("выключить" плагин)
 	$().grewform.runRules(); //вручную запустить проверку правил
 
-##Требования
+## Требования
  jQuery 1.7 или выше
 
 Загляните в [примеры](http://h1d.github.com/jquery-grewform/)
